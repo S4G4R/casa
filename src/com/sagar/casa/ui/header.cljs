@@ -3,7 +3,6 @@
 
 
 (defn Header []
-  #?(:cljs
-     [:> Navbar {:fixed "top" :bg "dark" :variant "dark"
-                 :style {:justify-content "center"}}
-      [:> (.-Brand Navbar) [:big "Casa"]]]))
+  [:> Navbar {:fixed "top" :bg "dark" :variant "dark"
+              :style {:justify-content "center"}}
+   [:> (.-Brand Navbar) [:big "Casa"]]])
