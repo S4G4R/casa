@@ -6,4 +6,4 @@
 
 (defmethod ds/named-system :donut.system/repl
  [_]
- {::ds/defs {:app dev-config}})
+ {::ds/defs dev-config})

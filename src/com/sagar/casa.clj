@@ -17,8 +17,9 @@
 
 
 (def dev-config
-  (-> config
-      (assoc :server server/dev-server)))
+  {:env env
+   :app (-> config
+            (assoc :server server/dev-server))})
 
 
 (defmethod ds/named-system :casa
