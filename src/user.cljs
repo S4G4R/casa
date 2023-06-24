@@ -37,6 +37,8 @@
 (def electric-main
   (hyperfiddle.electric/boot ; Electric macroexpansion - Clojure to signals compiler
    (binding [hyperfiddle.electric-dom2/node js/document.body]
+     ;; Set page title
+     (set! (.-textContent (js/document.querySelector "title")) "Casa")
      ;; Add meta tags
      (mapv add-tag meta-tags)
      ;; Render root component
