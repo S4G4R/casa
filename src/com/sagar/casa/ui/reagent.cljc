@@ -1,4 +1,4 @@
-(ns com.sagar.casa.reagent
+(ns com.sagar.casa.ui.reagent
   (:require [hyperfiddle.electric-dom2 :as dom]
             [reagent.core :as r]
             #?(:cljs ["react-dom/client" :as ReactDom])))

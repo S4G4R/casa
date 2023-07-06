@@ -31,7 +31,14 @@
    {:tag "link"
     :id "pico-css"
     :props {"rel" "stylesheet"
-            "href" "https://unpkg.com/@picocss/pico@latest/css/pico.min.css"}}])
+            "href" "https://unpkg.com/@picocss/pico@latest/css/pico.min.css"}}
+   ;; Font
+   {:tag "link"
+    :id "font-fam"
+    :props {"rel" "stylesheet"
+            "media" "screen"
+            "href" "https://fontlibrary.org//face/archivo-narrow"
+            "type" "text/css"}}])
 
 
 (def electric-main
@@ -42,7 +49,7 @@
      ;; Add meta tags
      (mapv add-tag meta-tags)
      ;; Render root component
-     (com.sagar.casa.ui/Main.))))
+     (com.sagar.casa.ui/Root.))))
 
 (defonce reactor nil)
 

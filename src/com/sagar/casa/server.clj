@@ -3,7 +3,6 @@
             [clojure.java.io :as io]
             [clojure.string :as str]
             [donut.system :as ds]
-            [taoensso.timbre :as timbre]
             [hyperfiddle.electric-jetty-adapter :as adapter]
             [ring.adapter.jetty9 :as ring]
             [ring.middleware.basic-authentication :as auth]
@@ -11,7 +10,8 @@
             [ring.middleware.cookies :as cookies]
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
-            [ring.util.response :as res]))
+            [ring.util.response :as res]
+            [taoensso.timbre :as timbre]))
 
 
 (defn authenticate [username password] username) ; demo (accept-all) authentication
