@@ -146,12 +146,12 @@
                   (ring/run-jetty
                    (http-middleware "public" "public/js/manifest.edn")
                    opts))
-        :stop   (fn [{server ::ds/instance {env :env} ::ds/config}]
+        :stop   (fn [{server ::ds/instance}]
                   (timbre/warn "Stopping HTTP Server...")
                   (ring/stop-server server)
                   ;; Stop shadowcljs server
                   ((requiring-resolve
-                    'shadow.cljs.devtools.api/stop-worker) env)
+                    'shadow.cljs.devtools.api/stop-worker) :dev)
                   ((requiring-resolve
                     'shadow.cljs.devtools.server/stop!)))
         :config {:host (ds/ref [:env :http-host])
