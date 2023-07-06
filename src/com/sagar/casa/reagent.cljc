@@ -4,10 +4,10 @@
             #?(:cljs ["react-dom/client" :as ReactDom])))
 
 
-(def ReactRootWrapper
-  #?(:cljs
+#?(:cljs
+   (def ReactRootWrapper
      (r/create-class
-      {:component-did-mount (fn [this] (js/console.log "mounted"))
+      {:component-did-mount (fn [_] (js/console.log "mounted"))
        :render (fn [this]
                  (let [[_ Component & args] (r/argv this)]
                    (into [Component] args)))})))
