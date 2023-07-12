@@ -2,6 +2,17 @@
   (:require ["react-bootstrap" :refer [Container Col Row Navbar Stack]]))
 
 
+(def links
+  (map-indexed
+   (fn [index [key val]]
+     {:index index
+      :label key
+      :url val})
+   {"Clojure" "https://clojure.org/"
+    "Electric" "https://github.com/hyperfiddle/electric"
+    "Reagent" "https://reagent-project.github.io/"}))
+
+
 (defn Footer []
   [:> Navbar {:fixed "bottom" :bg "dark" :variant "dark"}
    [:> Stack {:direction "horizontal" :gap 3 :class-name "w-100"}
@@ -13,8 +24,6 @@
       [:> Col {:xs "auto"}
        [:> (.-Text Navbar)
         [:small (str "Made with " \u2665 " using ")]]
-       (for [link {"Clojure" "https://clojure.org/"
-                   "Electric" "https://github.com/hyperfiddle/electric"
-                   "Reagent" "https://reagent-project.github.io/"}]
-         [:a {:href (val link) :target "_blank"}
-          [:small "[" (key link) "]"]])]]]]])
+       (for [{:keys [index label url]} links]
+         [:a {:href url :target "_blank" :key index}
+          [:small "[" label "]"]])]]]]])

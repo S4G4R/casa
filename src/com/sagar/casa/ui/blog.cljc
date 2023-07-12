@@ -8,19 +8,6 @@
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 
-#?(:clj
-   (def !blogs
-     (atom [{:title "ABC" :date "20/05/2023" :text "Hello!1"}
-            {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
-            {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
-            {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
-            {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
-            {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
-            {:title "ABC2" :date "21/05/2023" :text "Hello!2"}])))
-
-(e/def blogs (e/server (e/watch !blogs)))
-
-
 #?(:cljs (def modal-shown (r/atom false)))
 
 
@@ -42,13 +29,30 @@
   #?(:cljs
      [:> Container {:fluid true :class-name "p-5 overflow-auto"}
       [:> Stack {:gap 3 :class-name "col-md-8 mx-auto"}
-       (for [entry blogs] (BlogEntry entry))]
+       (for [entry blogs] [:div {:key (:id entry)} (BlogEntry entry)])]
       [:> Modal {:centered true
                  :animation false
                  :show @modal-shown
                  :on-hide #(reset! modal-shown false)}
        [:> (.-Header Modal) {:close-button true}]
        [:> (.-Body Modal) {}]]]))
+
+
+#?(:clj
+   (def data
+     (map-indexed
+      #(assoc %2 :id %1)
+      [{:title "ABC" :date "20/05/2023" :text "Hello!1"}
+       {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
+       {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
+       {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
+       {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
+       {:title "ABC2" :date "21/05/2023" :text "Hello!2"}
+       {:title "ABC2" :date "21/05/2023" :text "Hello!2"}])))
+
+#?(:clj (def !blogs (atom data)))
+
+(e/def blogs (e/server (e/watch !blogs)))
 
 
 (e/defn Blog []
