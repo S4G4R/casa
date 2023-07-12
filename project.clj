@@ -5,7 +5,7 @@
                  [hiccup "1.0.5"]
                  [metosin/reitit "0.5.18"]
                  [party.donut/system "0.0.167"]
-                 [com.hyperfiddle/electric "v2-alpha-338-geec2f3df"]
+                 [com.hyperfiddle/electric "v2-alpha-349-ge9996713"]
                  [ring-basic-authentication/ring-basic-authentication "1.1.1"]
                  [info.sunng/ring-jetty9-adapter "0.18.5"]
                  [com.taoensso/timbre "6.1.0"]
