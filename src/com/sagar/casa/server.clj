@@ -116,15 +116,9 @@
 (def server
   #::ds{:start  (fn [{{:keys [host port] :as opts} ::ds/config}]
                   (timbre/warn (str "Starting server on " host ":" port))
-                  ;; Start shadowcljs server
-                  ((requiring-resolve
-                    'shadow.cljs.devtools.server/start!))
                   ;; Build release
                   ((requiring-resolve
                     'shadow.cljs.devtools.api/release) :prod)
-                  ;; Stop server
-                  ((requiring-resolve
-                    'shadow.cljs.devtools.server/stop!))
                   ;; Start electric compiler and server
                   (ring/run-jetty
                    (http-middleware "public" "public/js/manifest.edn")
