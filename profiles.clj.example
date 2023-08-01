@@ -1,0 +1,3 @@
+{:env {:log-level :info
+       :http-host "localhost"
+       :http-port 7000}}

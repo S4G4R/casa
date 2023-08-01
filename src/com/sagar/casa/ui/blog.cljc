@@ -1,7 +1,7 @@
 (ns com.sagar.casa.ui.blog
   (:require #?(:cljs [reagent.core :as r])
-            #?(:cljs ["react-bootstrap" :refer [Button Card Col Container Modal Row
-                                       Stack]])
+            #?(:cljs ["react-bootstrap" :refer [Button Card Col Row
+                                                Container Modal Stack]])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e]
             [hyperfiddle.electric-dom2 :as dom])

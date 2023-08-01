@@ -1,14 +1,15 @@
 (ns com.sagar.casa
-  (:require [donut.system :as ds]
-            [com.sagar.casa.logging :as log]
-            [com.sagar.casa.server :as server])
+  (:require [com.sagar.casa.logging :as log]
+            [com.sagar.casa.server :as server]
+            [donut.system :as ds]
+            [environ.core :refer [env]])
   (:gen-class))
 
 
-(def env
-  {:log-level :info
-   :http-host "0.0.0.0"
-   :http-port 7000})
+(def env-map
+  {:log-level (read-string (env :log-level))
+   :http-host (env :http-host)
+   :http-port (read-string (env :http-port))})
 
 
 (def config
@@ -17,15 +18,13 @@
 
 
 (def dev-config
-  {:env env
-   :app (-> config
-            (assoc :server server/dev-server))})
+  (assoc config :server server/dev-server))
 
 
 (defmethod ds/named-system :casa
- [_]
- {::ds/defs {:env env
-             :app config}})
+  [_]
+  {::ds/defs {:env env-map
+              :app config}})
 
 
 (defn -main
