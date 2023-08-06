@@ -11,6 +11,8 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.util.response :as res]
+            [shadow.cljs.devtools.api :as shadow-api]
+            [shadow.cljs.devtools.server :as shadow-server]
             [taoensso.timbre :as timbre]))
 
 
@@ -115,11 +117,21 @@
 
 (def server
   #::ds{:start  (fn [{{:keys [host port] :as opts} ::ds/config}]
-                  (timbre/warn (str "Starting server on " host ":" port))
+                  (shadow-server/start!)
+                  ;; TODO: This property isnt being loaded in prod
+                  (timbre/warn "Building client version " VERSION)
                   ;; Build release
-                  ((requiring-resolve
-                    'shadow.cljs.devtools.api/release) :prod)
+                  (shadow-api/release
+                   :prod
+                   {:config-merge
+                    [{:debug true
+                      :verbose true
+                      :closure-defines
+                      ;; TODO: This version isn't being applied at all
+                      {'hyperfiddle.electric-client/VERSION "abcxyz2"}}]})
+                  (shadow-server/stop!)
                   ;; Start electric compiler and server
+                  (timbre/warn (str "Starting server on " host ":" port))
                   (ring/run-jetty
                    (http-middleware "public" "public/js/manifest.edn")
                    opts))
@@ -130,13 +142,11 @@
 
 (def dev-server
   #::ds{:start  (fn [{{:keys [host port] :as opts} ::ds/config}]
-                  (timbre/warn (str "Starting server on " host ":" port))
                   ;; Start shadowcljs server
-                  ((requiring-resolve
-                    'shadow.cljs.devtools.server/start!))
-                  ((requiring-resolve
-                    'shadow.cljs.devtools.api/watch) :dev)
+                  (shadow-server/start!)
+                  (shadow-api/watch :dev)
                   ;; Start electric compiler and server
+                  (timbre/warn (str "Starting server on " host ":" port))
                   (ring/run-jetty
                    (http-middleware "public" "public/js/manifest.edn")
                    opts))
@@ -144,10 +154,8 @@
                   (timbre/warn "Stopping HTTP Server...")
                   (ring/stop-server server)
                   ;; Stop shadowcljs server
-                  ((requiring-resolve
-                    'shadow.cljs.devtools.api/stop-worker) :dev)
-                  ((requiring-resolve
-                    'shadow.cljs.devtools.server/stop!)))
+                  (shadow-api/stop-worker :dev)
+                  (shadow-server/stop!))
         :config {:host (ds/ref [:env :http-host])
                  :port (ds/ref [:env :http-port])
                  :join? false}})

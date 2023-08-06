@@ -6,5 +6,5 @@
 
 (defmethod ds/named-system :donut.system/repl
   [_]
-  {::ds/defs {:env env-map
+  {::ds/defs {:env (env-map)
               :app dev-config}})

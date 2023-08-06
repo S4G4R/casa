@@ -1,0 +1,10 @@
+version: "3"
+services:
+  web:
+    environment:
+      - HTTP_HOST=0.0.0.0
+      - HTTP_PORT=8080
+      - LOG_LEVEL=info
+    build: .
+    ports:
+    - '8080:8080'

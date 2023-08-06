@@ -9,4 +9,5 @@
                   (timbre/set-min-level! log-level))
         :stop   (fn [_]
                   nil)
-        :config {:log-level (or (ds/ref [:env :log-level]) :info)}})
+        :config {:log-level (or (keyword (ds/ref [:env :log-level]))
+                                :info)}})

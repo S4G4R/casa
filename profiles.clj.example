@@ -1,3 +1,9 @@
-{:env {:log-level :info
-       :http-host "localhost"
-       :http-port 7000}}
+{:shared {:env {:log-level :info
+                :http-host "0.0.0.0"
+                :http-port 8080}}
+ :dev [:shared]
+ :production [:shared]
+ :uberjar [:shared {:aot [#"com.sagar\.+"
+                          hyperfiddle.electric
+                          hyperfiddle.electric-dom2]
+                    :resource-paths ["resources/public"]}]}

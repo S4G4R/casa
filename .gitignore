@@ -15,4 +15,4 @@ node_modules/
 .lsp/
 .clj-kondo/
 .calva/
-resources/public
+resources/public/js

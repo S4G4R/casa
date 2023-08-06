@@ -11,7 +11,7 @@
                  [thheller/shadow-cljs "2.20.1"]
                  [reagent "1.2.0"]]
   :plugins [[lein-environ "1.1.0"]]
-  :main com.sagar.casa
+  :main ^:skip-aot com.sagar.casa
   :target-path "target/%s"
   :repl-options {:init-ns user}
   :profiles {:uberjar {:aot :all}})
