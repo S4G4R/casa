@@ -26,9 +26,6 @@ COPY shadow-cljs.edn shadow-cljs.edn
 COPY project.clj project.clj
 RUN lein deps
 
-COPY package.json .
-COPY package-lock.json .
-
 COPY --from=build /usr/src/app/node_modules ./node_modules
 
 # Copy rest of the files
