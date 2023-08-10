@@ -5,6 +5,9 @@ services:
       - HTTP_HOST=0.0.0.0
       - HTTP_PORT=8080
       - LOG_LEVEL=info
-    build: .
+    build:
+      context: .
+      args:
+        - HYPERFIDDLE_ELECTRIC_APP_VERSION
     ports:
-    - '8080:8080'
+      - '8080:8080'
