@@ -129,7 +129,6 @@
                      (ex-info "HYPERFIDDLE_ELECTRIC_SERVER_VERSION jvm property must be set in prod"
                               {})))
                   (shadow-server/start!)
-                  ;; TODO: This property isnt being loaded in prod
                   (timbre/warn "Building client version" VERSION)
                   ;; Build release
                   (shadow-api/release
