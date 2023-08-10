@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 COPY package.json .
 COPY package-lock.json .
 
+RUN npm install
 RUN npm ci
 
 FROM clojure:lein
@@ -52,4 +53,6 @@ ENTRYPOINT exec java $JAVA_OPTS -jar app-standalone.jar
 # https://github.com/hyperfiddle/electric-starter-app/blob/main/README.md#deployment
 # https://github.com/hyperfiddle/electric-starter-app/blob/main/src-build/build.clj
 # TODO
-# App throws "Missing client program manifest"
+# App throws "Missing client program manifest". 
+# Resources are missing from JAR? Try different strategy
+# Create alias to build JS module first and then build JAR
