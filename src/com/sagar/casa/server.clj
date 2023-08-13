@@ -46,11 +46,16 @@
 
 (defn get-modules [manifest-path]
   (when-let [manifest (io/resource manifest-path)]
-    (let [manifest-folder (when-let [folder-name (second (rseq (str/split manifest-path #"\/")))]
-                            (str "/" folder-name "/"))]
+    (let [manifest-folder
+          (when-let [folder-name (second (rseq (str/split manifest-path #"\/")))]
+            (str "/" folder-name "/"))]
       (->> (slurp manifest)
-        (edn/read-string)
-        (reduce (fn [r module] (assoc r (keyword "hyperfiddle.client.module" (name (:name module))) (str manifest-folder (:output-name module)))) {})))))
+           (edn/read-string)
+           (reduce (fn [r module]
+                     (assoc r
+                            (keyword "hyperfiddle.client.module" (name (:name module)))
+                            (str manifest-folder (:output-name module))))
+                   {})))))
 
 (defn wrap-index-page
   "Serves the `index.html` file with injected javascript modules from
@@ -60,8 +65,10 @@
   (fn [ring-req]
     (if-let [response (res/resource-response (str resources-path "/index.html"))]
       (if-let [modules (get-modules manifest-path)]
-        (-> (res/response (template (slurp (:body response)) modules)) ; TODO cache in prod mode
-            (res/content-type "text/html") ; ensure `index.html` is not cached
+        ; TODO cache in prod mode
+        (-> (res/response (template (slurp (:body response)) modules))
+            ;; ensure `index.html` is not cached
+            (res/content-type "text/html")
             (res/header "Cache-Control" "no-store")
             (res/header "Last-Modified" (get-in response [:headers "Last-Modified"])))
         ;; No manifest found, can't inject js modules
@@ -124,19 +131,6 @@
 
 (def server
   #::ds{:start  (fn [{{:keys [host port] :as opts} ::ds/config}]
-                  (when (str/blank? VERSION)
-                    (throw
-                     (ex-info "HYPERFIDDLE_ELECTRIC_SERVER_VERSION jvm property must be set in prod"
-                              {})))
-                  (shadow-server/start!)
-                  (timbre/warn "Building client version" VERSION)
-                  ;; Build release
-                  (shadow-api/release
-                   :prod
-                   {:config-merge
-                    [{:closure-defines
-                      {'hyperfiddle.electric-client/VERSION VERSION}}]})
-                  (shadow-server/stop!)
                   ;; Start electric compiler and server
                   (timbre/warn (str "Starting server on " host ":" port))
                   (ring/run-jetty

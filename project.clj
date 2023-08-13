@@ -14,4 +14,5 @@
   :main ^:skip-aot com.sagar.casa
   :target-path "target/%s"
   :repl-options {:init-ns user}
+  :aliases {"build" ["run" "-m" "com.sagar.casa/build"]}
   :profiles {:uberjar {:aot :all}})

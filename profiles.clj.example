@@ -3,7 +3,4 @@
                 :http-port 8080}}
  :dev [:shared]
  :production [:shared]
- :uberjar [:shared {:aot [#"com.sagar\.+"
-                          hyperfiddle.electric
-                          hyperfiddle.electric-dom2]
-                    :resource-paths ["resources/public"]}]}
+ :uberjar [:shared {:aot [#"com.sagar\.+"]}]}

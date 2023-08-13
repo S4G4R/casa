@@ -28,8 +28,16 @@ RUN lein deps
 
 COPY --from=build /usr/src/app/node_modules ./node_modules
 
-# Copy rest of the files
+# Copy sources
 COPY src src
+
+ARG HYPERFIDDLE_ELECTRIC_APP_VERSION
+ENV JVM_OPTS="-DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$HYPERFIDDLE_ELECTRIC_APP_VERSION"
+
+# Build client artifact
+RUN lein build
+
+# Copy resources after build
 COPY resources resources
 
 # Build JAR
@@ -38,18 +46,10 @@ RUN mv "$(lein uberjar | sed -n 's/^Created \(.*standalone\.jar\)/\1/p')" app-st
 # Expose port
 EXPOSE 8080
 
-ARG HYPERFIDDLE_ELECTRIC_APP_VERSION
 ENV JAVA_OPTS="-DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$HYPERFIDDLE_ELECTRIC_APP_VERSION"
-
-# RUN echo $HYPERFIDDLE_ELECTRIC_APP_VERSION > /tmp/foo
-# CMD cat /tmp/foo
 
 ENTRYPOINT exec java $JAVA_OPTS -jar app-standalone.jar
 
 # REFERENCE
 # https://github.com/hyperfiddle/electric-starter-app/blob/main/README.md#deployment
 # https://github.com/hyperfiddle/electric-starter-app/blob/main/src-build/build.clj
-# TODO
-# App throws "Missing client program manifest". 
-# Resources are missing from JAR? Try different strategy
-# Create alias to build JS module first and then build JAR
