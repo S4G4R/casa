@@ -3,6 +3,7 @@
             #?(:cljs ["react-bootstrap" :refer [Col Row Container Modal
                                                 ListGroup]])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
+            [com.sagar.casa.data :refer [blogs]]
             [hyperfiddle.electric :as e]
             [hyperfiddle.electric-dom2 :as dom])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
@@ -34,23 +35,6 @@
        [:> (.-Body Modal) {}]]]))
 
 
-#?(:clj
-   (def data
-     (map-indexed
-      #(assoc %2 :id %1)
-      [{:title "ABC2" :date "20/05/2023"}
-       {:title "ABC2" :date "21/05/2023"}
-       {:title "ABC2" :date "21/05/2023"}
-       {:title "ABC2" :date "21/05/2023"}
-       {:title "ABC2" :date "21/05/2023"}
-       {:title "ABC2" :date "21/05/2023"}
-       {:title "ABC2" :date "21/05/2023"}])))
-
-#?(:clj (def !blogs (atom data)))
-
-(e/def blogs (e/server (e/watch !blogs)))
-
-
 (e/defn Blog []
   (e/client
    (dom/div
@@ -58,9 +42,3 @@
                         :padding-bottom "56px"
                         :min-height "100vh"}})
     (with-reagent BlogList blogs))))
-
-
-(comment
-  (swap! data conj {:title "ABC" :date "20/05/2023" :text "Hello!1"})
-
-  (reset! data nil))
