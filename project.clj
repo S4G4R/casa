@@ -9,7 +9,8 @@
                  [com.taoensso/timbre "6.1.0"]
                  [environ "1.1.0"]
                  [thheller/shadow-cljs "2.20.1"]
-                 [reagent "1.2.0"]]
+                 [reagent "1.2.0"]
+                 [metosin/reitit "0.5.18"]]
   :plugins [[lein-environ "1.1.0"]]
   :main ^:skip-aot com.sagar.casa
   :target-path "target/%s"

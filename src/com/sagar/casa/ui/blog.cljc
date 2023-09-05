@@ -15,7 +15,8 @@
 (defn BlogEntry [{:keys [id title date]}]
   #?(:cljs
      [:> (.-Item ListGroup) {:action true
-                             :on-click #(reset! modal-shown not)
+                             :href "/hello"
+                            ;;  :on-click #(reset! modal-shown not)
                              :class-name "mb-3"}
       [:> Row
        [:> Col {:class-name "text-start"} title]
