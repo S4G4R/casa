@@ -4,8 +4,7 @@
                                                 ListGroup]])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [com.sagar.casa.data :refer [blogs]]
-            [hyperfiddle.electric :as e]
-            [hyperfiddle.electric-dom2 :as dom])
+            [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 
@@ -38,8 +37,4 @@
 
 (e/defn Blog []
   (e/client
-   (dom/div
-    (dom/props {:style {:padding-top "56px"
-                        :padding-bottom "56px"
-                        :min-height "100vh"}})
-    (with-reagent BlogList blogs))))
+   (with-reagent BlogList blogs)))

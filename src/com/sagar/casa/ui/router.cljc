@@ -1,10 +1,10 @@
 (ns com.sagar.casa.ui.router
-  (:require [hyperfiddle.electric :as e]
+  (:require [com.sagar.casa.ui.blog :refer [Blog]]
+            [com.sagar.casa.ui.hello :refer [Hello]]
+            [hyperfiddle.electric :as e]
             [missionary.core :as m]
             [reitit.core :as rr]
-            [reitit.frontend.easy :as rfe]
-            [com.sagar.casa.ui.blog :refer [Blog]]
-            [com.sagar.casa.ui.hello :refer [Hello]]))
+            [reitit.frontend.easy :as rfe]))
 
 ;; Reference
 ;; https://github.com/lumberdev/tesserae/blob/cea33f19b46892abb78feb99d51af2dd54849435/src/tesserae/ui/app.cljs
@@ -33,9 +33,11 @@
 
 (e/defn Router []
   (let [{:as match :keys [data query-params path-params]} re-router
-        route (some-> data :name)]
-    (set-page-title! match)
-    (case route
-      :home (new Blog)
-      :blog (new Blog)
-      :hello (new Hello))))
+          route (some-> data :name)]
+      (set-page-title! match)
+      (case route
+        :home (Blog.)
+        :blog (Blog.)
+        :hello (Hello.)
+        ;; TODO: Add 404 page
+        )))
