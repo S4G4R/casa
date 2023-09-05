@@ -21,7 +21,7 @@
       [:> Col
        [:> (.-Text Navbar)
         [:small "Copyright " \u00A9 " 2023, Sagar Vrajalal"]]]
-      [:> Col {:xs "auto"}
+      [:> Col {:xs "auto" :class-name "d-none d-sm-block"}
        [:> (.-Text Navbar)
         [:small (str "Made with " \u2665 " using ")]]
        (for [{:keys [index label url]} links]
