@@ -7,10 +7,8 @@
 
 (defn HelloText []
   #?(:cljs
-     (do
-       (js/console.log "Here!")
-       [:> Container {:fluid true :class-name "p-5 overflow-auto"}
-        [:div [:b "Hello!"]]])))
+     [:> Container {:fluid true :class-name "p-5 overflow-auto"}
+      [:div [:b "Hello!"]]]))
 
 
 (e/defn Hello []
