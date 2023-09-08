@@ -16,6 +16,4 @@
                         :min-height "100vh"}})
     (with-reagent #?(:cljs Header))
     (Router.)
-    ;; TODO: Footer doesn't work with router (check console logs)
-    ;; (with-reagent #?(:cljs Footer))
-    )))
+    (with-reagent #?(:cljs Footer)))))
