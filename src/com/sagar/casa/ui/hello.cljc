@@ -28,18 +28,20 @@
 
 (e/defn Hello []
   (e/client
-   (with-reagent HelloText !client-text)
-   (when-some [text (e/watch !client-text)]
+   (with-reagent HelloText)
+   (when-some [client-text (e/watch !client-text)]
      (e/server
-      (reset! !server-text text)
-      (prn @!server-text))
-     (dom/h1 (dom/text text)))))
+      (let [server-text (e/watch !server-text)]
+        (reset! !server-text client-text)
+        (prn server-text))
+      (e/client
+       (dom/h1 (dom/text client-text)))))))
 
 
 (comment
   ;; Will always be nil because the client holds the value, can't access
   ;; here
   @!client-text
-  ;; Gets set the first time, not subsequent times (why?)
+  ;; Works!
   @!server-text
   )
