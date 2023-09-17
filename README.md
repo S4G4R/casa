@@ -20,3 +20,15 @@ rm -rf resources/public/js \
 ```bash
 HYPERFIDDLE_ELECTRIC_APP_VERSION=`git describe --tags --long --always --dirty` docker compose up --build
 ```
+
+## Deploy to Fly.io
+
+### Create app (only first time)
+```bash
+flyctl launch
+```
+
+### Deploy
+```bash
+flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
+```
