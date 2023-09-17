@@ -31,4 +31,5 @@ flyctl launch
 ### Deploy
 ```bash
 flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
+flyctl scale memory 512
 ```
