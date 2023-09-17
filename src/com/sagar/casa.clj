@@ -5,6 +5,7 @@
             ;; If not loaded, leads to symbol unresolved errors, how do
             ;; we fix/dynamically load?
             [com.sagar.casa.ui.blog]
+            [com.sagar.casa.ui.hello]
             [donut.system :as ds]
             [environ.core :refer [env]]
             [shadow.cljs.devtools.api :as shadow-api]

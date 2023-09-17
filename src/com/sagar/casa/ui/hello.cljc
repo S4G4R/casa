@@ -22,8 +22,8 @@
                         (reset! !client-text))}
        "Submit"]]))
 
-
 #?(:clj (defonce !server-text (atom nil)))
+#?(:clj (e/def server-text (e/server (e/watch !server-text))))
 
 
 (e/defn Hello []
@@ -31,11 +31,9 @@
    (with-reagent HelloText)
    (when-some [client-text (e/watch !client-text)]
      (e/server
-      (let [server-text (e/watch !server-text)]
-        (reset! !server-text client-text)
-        (prn server-text))
-      (e/client
-       (dom/h1 (dom/text client-text)))))))
+      (reset! !server-text client-text)
+      (prn server-text))
+     (dom/h1 (dom/text client-text)))))
 
 
 (comment
