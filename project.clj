@@ -7,6 +7,8 @@
                  [ring-basic-authentication/ring-basic-authentication "1.1.1"]
                  [info.sunng/ring-jetty9-adapter "0.18.5"]
                  [com.taoensso/timbre "6.1.0"]
+                 [com.fzakaria/slf4j-timbre "0.4.0"]
+                 [ch.qos.logback/logback-classic "1.2.11"]
                  [environ "1.1.0"]
                  [thheller/shadow-cljs "2.20.1"]
                  [reagent "1.2.0"]
