@@ -2,7 +2,7 @@
   :description "Mi Casa"
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.11.60"]
-                 [party.donut/system "0.0.167"]
+                 [party.donut/system "0.0.215"]
                  [com.hyperfiddle/electric "v2-alpha-428-g22937f75"]
                  [ring-basic-authentication/ring-basic-authentication "1.1.1"]
                  [info.sunng/ring-jetty9-adapter "0.18.5"]
@@ -12,7 +12,11 @@
                  [environ "1.1.0"]
                  [thheller/shadow-cljs "2.20.1"]
                  [reagent "1.2.0"]
-                 [metosin/reitit "0.5.18"]]
+                 [metosin/reitit "0.5.18"]
+                 [cheshire "5.12.0"]
+                 [alekcz/storyblok-clj "1.2.0"]
+                 [camel-snake-kebab/camel-snake-kebab "0.4.3"]
+                 [clojure.java-time "1.3.0"]]
   :plugins [[lein-environ "1.1.0"]]
   :main ^:skip-aot com.sagar.casa
   :target-path "target/%s"

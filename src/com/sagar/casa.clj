@@ -2,10 +2,7 @@
   (:require [clojure.string :as str]
             [com.sagar.casa.logging :as log]
             [com.sagar.casa.server :as server]
-            ;; If not loaded, leads to symbol unresolved errors, how do
-            ;; we fix/dynamically load?
-            [com.sagar.casa.ui.blog]
-            [com.sagar.casa.ui.hello]
+            [com.sagar.casa.ui]
             [donut.system :as ds]
             [environ.core :refer [env]]
             [shadow.cljs.devtools.api :as shadow-api]
@@ -18,7 +15,9 @@
   []
   {:log-level (read-string (env :log-level))
    :http-host (env :http-host)
-   :http-port (read-string (env :http-port))})
+   :http-port (read-string (env :http-port))
+   :storyblok-base-url (env :storyblok-base-url)
+   :storyblok-token (env :storyblok-token)})
 
 
 (def config

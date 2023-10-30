@@ -1,6 +1,8 @@
 (ns com.sagar.casa.ui
   (:require #?(:cljs [com.sagar.casa.ui.header :refer [Header]])
             #?(:cljs [com.sagar.casa.ui.footer :refer [Footer]])
+            [com.sagar.casa.ui.blog]
+            [com.sagar.casa.ui.hello]
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [com.sagar.casa.ui.router :refer [Router]]
             [hyperfiddle.electric :as e]

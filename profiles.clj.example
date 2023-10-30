@@ -1,6 +1,8 @@
 {:shared {:env {:log-level :info
                 :http-host "0.0.0.0"
-                :http-port 8080}}
+                :http-port 8080
+                :storyblok-base-url "abc"
+                :storyblok-token "xyz"}}
  :dev [:shared]
  :production [:shared]
  :uberjar [:shared {:aot [#"com.sagar\.+"]}]}

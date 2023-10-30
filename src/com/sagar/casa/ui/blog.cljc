@@ -1,9 +1,9 @@
 (ns com.sagar.casa.ui.blog
   (:require #?(:cljs [reagent.core :as r])
-            #?(:cljs ["react-bootstrap" :refer [Col Row Container Modal
-                                                ListGroup]])
+            #?(:cljs ["react-bootstrap" :refer [Col Container ListGroup
+                                                Modal Row]])
+            #?(:clj [com.sagar.casa.api.blog :as blog])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
-            [com.sagar.casa.data :refer [blogs]]
             [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
@@ -11,7 +11,7 @@
 #?(:cljs (def modal-shown (r/atom false)))
 
 
-(defn BlogEntry [{:keys [id title date]}]
+(defn BlogEntry [{:keys [title description timestamp]}]
   #?(:cljs
      [:> (.-Item ListGroup) {:action true
                              :href "/hello"
@@ -19,7 +19,8 @@
                              :class-name "mb-3"}
       [:> Row
        [:> Col {:class-name "text-start"} title]
-       [:> Col {:class-name "text-end"} date]]]))
+       [:> Col description]
+       [:> Col {:class-name "text-end"} timestamp]]]))
 
 
 (defn BlogList [blogs]
@@ -37,4 +38,4 @@
 
 (e/defn Blog []
   (e/client
-   (with-reagent BlogList blogs)))
+   (with-reagent BlogList (e/server (blog/blogs)))))
