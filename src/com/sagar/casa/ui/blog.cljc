@@ -1,21 +1,36 @@
 (ns com.sagar.casa.ui.blog
-  (:require #?(:cljs [reagent.core :as r])
-            #?(:cljs ["react-bootstrap" :refer [Col Container ListGroup
-                                                Modal Row]])
-            #?(:clj [com.sagar.casa.api.blog :as blog])
+  (:require #?(:cljs ["react-bootstrap" :refer [Col Container ListGroup
+                                                Card Row]])
+            #?(:cljs ["interweave" :refer [Interweave Markup]])
+            #?(:clj [com.sagar.casa.api.blog :as api])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 
-#?(:cljs (def modal-shown (r/atom false)))
+(defn blog-post [{:keys [title body description timestamp]}]
+  #?(:cljs
+     [:> Container {:class-name "p-5 overflow-auto"}
+      [:> Card {:bg :dark}
+       [:> (.-Header Card)
+        [:> (.-Text Card) title]
+        [:> (.-Subtitle Card)
+         [:> (.-Text Card) description]]]
+       [:> (.-Body Card)
+        [:> (.-Text Card)
+         [:> Interweave {:attributes {:style {:white-space :pre-line}}
+                         :content body}]]]]]))
 
 
-(defn BlogEntry [{:keys [title description timestamp]}]
+(e/defn BlogPost [slug]
+  (e/client
+   (with-reagent blog-post (e/server (api/blog slug)))))
+
+
+(defn blog-entry [{:keys [title description timestamp slug]}]
   #?(:cljs
      [:> (.-Item ListGroup) {:action true
-                             :href "/hello"
-                            ;;  :on-click #(reset! modal-shown not)
+                             :href slug
                              :class-name "mb-3"}
       [:> Row
        [:> Col {:class-name "text-start"} title]
@@ -23,19 +38,14 @@
        [:> Col {:class-name "text-end"} timestamp]]]))
 
 
-(defn BlogList [blogs]
+(defn blog-list [blogs]
   #?(:cljs
      [:> Container {:fluid true :class-name "p-5 overflow-auto"}
       [:> ListGroup {:class-name "mx-auto"}
-       (for [entry blogs] [:div {:key (:id entry)} (BlogEntry entry)])]
-      [:> Modal {:centered true
-                 :animation false
-                 :show @modal-shown
-                 :on-hide #(reset! modal-shown false)}
-       [:> (.-Header Modal) {:close-button true}]
-       [:> (.-Body Modal) {}]]]))
+       (for [{id :id :as entry} blogs]
+         [:div {:key id} (blog-entry entry)])]]))
 
 
-(e/defn Blog []
+(e/defn BlogList []
   (e/client
-   (with-reagent BlogList (e/server (blog/blogs)))))
+   (with-reagent blog-list (e/server (api/blogs)))))

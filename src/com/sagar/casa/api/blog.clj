@@ -32,7 +32,7 @@
     {:keys [body title description]} :content}]
   {:timestamp (timestamp->str first-published-at)
    :slug full-slug
-   :body (sb/richtext->hiccup body)
+   :body (sb/richtext->html body)
    :title title
    :description description})
 
@@ -55,7 +55,7 @@
   "Returns the blogpost corresponding the given slug"
   [slug]
   (->> (str (:storyblok-base-url (config))
-            "/" slug "?token="
+            "/blog/" slug "?token="
             (:storyblok-token (config)))
        slurp
        cheshire/parse-string
@@ -65,5 +65,5 @@
 
 (comment
   (blogs)
-  (blog "blog/first")
+  (blog "first")
   )
