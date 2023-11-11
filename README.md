@@ -5,7 +5,6 @@
 
 (For hot reload)
 ```bash
-JVM_OPTS="-DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$(git describe --tags --long --always --dirty)" lein build
 lein repl
 => (start)
 ```
