@@ -1,14 +1,14 @@
 (ns com.sagar.casa.ui.blog
-  (:require #?(:cljs ["react-bootstrap" :refer [Col Container ListGroup
-                                                Card Row]])
-            #?(:cljs ["interweave" :refer [Interweave Markup]])
+  (:require #?(:cljs ["react-bootstrap" :refer [Card Col Container
+                                                ListGroup Row]])
+            #?(:cljs ["interweave" :refer [Markup]])
             #?(:clj [com.sagar.casa.api.blog :as api])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 
-(defn blog-post [{:keys [title body description timestamp]}]
+(defn blog-post [{:keys [title html-body description timestamp]}]
   #?(:cljs
      [:> Container {:class-name "p-5 overflow-auto"}
       [:> Card {:bg :dark}
@@ -18,8 +18,8 @@
          [:> (.-Text Card) description]]]
        [:> (.-Body Card)
         [:> (.-Text Card)
-         [:> Interweave {:attributes {:style {:white-space :pre-line}}
-                         :content body}]]]]]))
+         [:> Markup {:attributes {:style {:white-space :pre-line}}
+                     :content html-body}]]]]]))
 
 
 (e/defn BlogPost [slug]

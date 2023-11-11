@@ -32,7 +32,7 @@
     {:keys [body title description]} :content}]
   {:timestamp (timestamp->str first-published-at)
    :slug full-slug
-   :body (sb/richtext->html body)
+   :html-body (sb/richtext->html body)
    :title title
    :description description})
 
