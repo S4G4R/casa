@@ -3,6 +3,8 @@
 
 
 (defn Header []
-  [:> Navbar {:fixed "top" :bg "dark" :variant "dark"
-              :style {:justify-content "center"}}
+  [:> Navbar {:fixed :top
+              :bg :dark
+              :variant :dark
+              :style {:justify-content :center}}
    [:> (.-Brand Navbar) [:big "Casa"]]])

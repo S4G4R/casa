@@ -10,16 +10,16 @@
 
 (defn blog-post [{:keys [title html-body description timestamp]}]
   #?(:cljs
-     [:> Container {:class-name "p-5 overflow-auto"}
+     [:> Container {:fluid true
+                    :data-theme :dark
+                    :class-name "p-5 text-white"}
       [:> Card {:bg :dark}
        [:> (.-Header Card)
-        [:> (.-Text Card) title]
-        [:> (.-Subtitle Card)
-         [:> (.-Text Card) description]]]
-       [:> (.-Body Card)
-        [:> (.-Text Card)
-         [:> Markup {:attributes {:style {:white-space :pre-line}}
-                     :content html-body}]]]]]))
+        [:> (.-Title Card) [:big title]]
+        [:> (.-Subtitle Card) description]]
+       [:> (.-Body Card) {:style {:--pico-color :white}}
+        [:> Markup {:attributes {:style {:white-space :pre-line}}
+                    :content html-body}]]]]))
 
 
 (e/defn BlogPost [slug]
