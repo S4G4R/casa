@@ -30,6 +30,8 @@ flyctl launch
 
 ### Deploy
 ```bash
+flyctl secrets set STORYBLOK_BASE_URL=https://api.storyblok.com/v2/cdn/stories --stage
+flyctl secrets set STORYBLOK_TOKEN=xyz --stage
 flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
 flyctl scale memory 512
 ```

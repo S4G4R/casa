@@ -1,7 +1,7 @@
 {:shared {:env {:log-level :info
                 :http-host "0.0.0.0"
                 :http-port 8080
-                :storyblok-base-url "abc"
+                :storyblok-base-url "https://api.storyblok.com/v2/cdn/stories"
                 :storyblok-token "xyz"}}
  :dev [:shared]
  :production [:shared]
