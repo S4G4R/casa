@@ -35,3 +35,14 @@ flyctl secrets set STORYBLOK_TOKEN=xyz --stage
 flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
 flyctl scale memory 512
 ```
+
+### Suspend/Resume
+```bash
+flyctl scale count 0 -a casa
+flyctl scale count 1 -a casa
+```
+
+### Delete app
+```bash
+flyctl apps destroy casa
+```
