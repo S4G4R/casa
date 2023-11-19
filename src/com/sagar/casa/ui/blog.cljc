@@ -1,6 +1,5 @@
 (ns com.sagar.casa.ui.blog
-  (:require #?(:cljs ["react-bootstrap" :refer [Card Col Container
-                                                ListGroup Row]])
+  (:require #?(:cljs ["react-bootstrap" :refer [Card Col Container ListGroup Row]])
             #?(:cljs ["interweave" :refer [Markup]])
             #?(:clj [com.sagar.casa.api.blog :as api])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
@@ -34,7 +33,6 @@
                              :class-name "mb-3"}
       [:> Row
        [:> Col {:class-name "text-start"} title]
-       [:> Col description]
        [:> Col {:class-name "text-end"} timestamp]]]))
 
 

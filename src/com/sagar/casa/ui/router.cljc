@@ -1,10 +1,14 @@
 (ns com.sagar.casa.ui.router
   (:require [com.sagar.casa.ui.blog :refer [BlogList BlogPost]]
+            #?(:cljs [com.sagar.casa.ui.home :refer [Home]])
+            [com.sagar.casa.ui.routes :as routes]
+            [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e]
             [missionary.core :as m]
             [reitit.core :as rr]
             #?(:cljs [cljs.js :as js])
-            #?(:cljs [reitit.frontend.easy :as rfe])))
+            #?(:cljs [reitit.frontend.easy :as rfe]))
+  #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 ;; Reference
 ;; https://github.com/lumberdev/tesserae/blob/cea33f19b46892abb78feb99d51af2dd54849435/src/tesserae/ui/app.cljs
@@ -12,12 +16,12 @@
 
 (def router
   (rr/router
-   [["/"           {:name :home
-                    :title "Home"}]
-    ["/blog"       {:name :blog
-                    :title "Blog"}]
-    ["/blog/:slug" {:name :blog-post
-                    :title "Blog"}]]))
+   [[routes/home               {:name :home
+                                :title "Home"}]
+    [routes/blog               {:name :blog
+                                :title "Blog"}]
+    [(routes/blogpost ":slug") {:name :blog-post
+                                :title "Blog"}]]))
 
 
 #?(:cljs
@@ -37,7 +41,7 @@
         route (some-> data :name)]
     #?(:cljs (set-page-title! match))
     (case route
-      :home (BlogList.)
+      :home (with-reagent #?(:cljs Home))
       :blog (BlogList.)
       :blog-post (BlogPost. (:slug path-params))
         ;; TODO: Add 404 page
