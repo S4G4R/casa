@@ -12,9 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
-          with:
-            path: ~/.m2/repository
-            key: cljdeps-${{ hashFiles('project.clj') }}
+        with:
+          path: ~/.m2/repository
+          key: cljdeps-${{ hashFiles('project.clj') }}
           restore-keys: cljdeps-
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
