@@ -11,16 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      # Cache maven artifacts
       - uses: actions/cache@v3
         with:
-          path: |
-            /usr/src/app/.m2/repository
-            /usr/src/app/node_modules
+          path: /usr/src/app/.m2/repository
           key: cljdeps-${{ hashFiles('project.clj') }}
+          restore-keys: cljdeps-
+      # Cache node modules 
+      - uses: actions/cache@v3
+        with:
+          path: /usr/src/app/node_modules
           key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            cljdeps-
-            npm-
+          restore-keys: npm-                        
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
       - run: flyctl scale memory 512
