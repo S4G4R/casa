@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy to Fly.io
+        run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
+      # - name: Scale RAM to 512MB
+      #   run: flyctl scale memory 512
       - name: Cache Maven Artifacts
         uses: actions/cache@v3
         with:
@@ -23,8 +28,3 @@ jobs:
           path: /usr/src/app/node_modules
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Deploy to Fly.io
-        run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
-      # - name: Scale RAM to 512MB
-      #   run: flyctl scale memory 512
