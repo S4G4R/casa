@@ -12,28 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - uses: docker/setup-buildx-action@v3
       - name: Deploy to Fly.io
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          # Docker layer caching
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
         run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty) --local-only
       - name: Scale RAM to 512MB
         run: flyctl scale memory 512
         continue-on-error: true
-      # TODO: Caching doesn't work
-      # - name: Cache Maven Artifacts
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /usr/src/app/.m2/repository
-      #     key: cljdeps-${{ hashFiles('project.clj') }}
-      #     restore-keys: cljdeps-
-      # - name: Cache Node Modules
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /usr/src/app/node_modules
-      #     key: npm-${{ hashFiles('package-lock.json') }}
-      #     restore-keys: npm-
