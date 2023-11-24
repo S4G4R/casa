@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}      
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
   deploy:
     name: Deploy app
@@ -17,7 +17,7 @@ jobs:
           path: /usr/src/app/.m2/repository
           key: cljdeps-${{ hashFiles('project.clj') }}
           restore-keys: cljdeps-
-      - name: Cache Node Modules          
+      - name: Cache Node Modules
         uses: actions/cache@v3
         with:
           path: /usr/src/app/node_modules
@@ -25,6 +25,6 @@ jobs:
           restore-keys: npm-
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy to Fly.io
-        run: LOG_LEVEL=DEBUG flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty) --remote-only
-      - name: Scale RAM to 512MB        
+        run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)
+      - name: Scale RAM to 512MB
         run: flyctl scale memory 512
