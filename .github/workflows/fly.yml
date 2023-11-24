@@ -13,13 +13,13 @@ jobs:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - uses: docker/setup-buildx-action@v3
-      - uses: docker/build-push-action@v5
+      - name: Deploy to Fly.io
+        uses: docker/build-push-action@v5
         with:
           context: .
           # Docker layer caching
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Deploy to Fly.io
         run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty) --local-only
       - name: Scale RAM to 512MB
         run: flyctl scale memory 512
