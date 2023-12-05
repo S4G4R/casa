@@ -13,7 +13,10 @@
       (select-keys [:storyblok-token :storyblok-base-url])))
 
 
-(defn timestamp->str
+(defn timestamp->date
+  "Converts an ISO timestamp to a date
+
+  eg. `2023-12-05T15:26:17.541216Z` -> `05/12/2023`"
   [timestamp]
   (let [{:keys [year
                 month-of-year
@@ -30,7 +33,7 @@
   "Returns the StoryBlok story after applying transformations"
   [{:keys [first-published-at full-slug]
     {:keys [body title description]} :content}]
-  {:timestamp (timestamp->str first-published-at)
+  {:timestamp (timestamp->date first-published-at)
    :slug full-slug
    :html-body (sb/richtext->html body)
    :title title
