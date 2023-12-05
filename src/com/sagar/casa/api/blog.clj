@@ -2,15 +2,10 @@
   (:require [camel-snake-kebab.core :refer [->kebab-case-keyword]]
             [camel-snake-kebab.extras :refer [transform-keys]]
             [cheshire.core :as cheshire]
-            [donut.system :as ds]
+            [com.sagar.casa.api.config :refer [config]]
             [java-time.api :as jt]
-            [storyblok-clj.core :as sb]))
-
-
-(defn ^:private config []
-  (-> (ds/system :casa)
-      (get-in [::ds/defs :env])
-      (select-keys [:storyblok-token :storyblok-base-url])))
+            [storyblok-clj.core :as sb]
+            [taoensso.timbre :as timbre]))
 
 
 (defn timestamp->date
@@ -41,30 +36,39 @@
 
 
 (defn blogs
-  "Returns a list of all the blogposts"
+  "Returns a list of all the blogposts, `nil` if failed to fetch"
   []
-  (->> (str (:storyblok-base-url (config))
+  (try
+    (->> (str (:storyblok-base-url (config))
             ;; Don't include body of the blog post in the list
-            (str "?starts_with=blog&excluding_fields=body&token=")
-            (:storyblok-token (config)))
-       slurp
-       cheshire/parse-string
-       (transform-keys ->kebab-case-keyword)
-       :stories
-       (map transform-story)))
+              (str "?starts_with=blog&excluding_fields=body&token=")
+              (:storyblok-token (config)))
+         slurp
+         cheshire/parse-string
+         (transform-keys ->kebab-case-keyword)
+         :stories
+         (map transform-story))
+    (catch java.io.FileNotFoundException e
+      (timbre/error e)
+      (timbre/error "Could not fetch blogs"))))
 
 
 (defn blog
-  "Returns the blogpost corresponding the given slug"
+  "Returns the blogpost corresponding the given slug, `nil` if not
+  found"
   [slug]
-  (->> (str (:storyblok-base-url (config))
-            "/blog/" slug "?token="
-            (:storyblok-token (config)))
-       slurp
-       cheshire/parse-string
-       (transform-keys ->kebab-case-keyword)
-       :story
-       transform-story))
+  (try
+    (->> (str (:storyblok-base-url (config))
+              "/blog/" slug "?token="
+              (:storyblok-token (config)))
+         slurp
+         cheshire/parse-string
+         (transform-keys ->kebab-case-keyword)
+         :story
+         transform-story)
+    (catch java.io.FileNotFoundException e
+      (timbre/error e)
+      (timbre/error "Could not fetch blog"))))
 
 (comment
   (blogs)

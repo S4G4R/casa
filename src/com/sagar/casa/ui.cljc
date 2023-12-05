@@ -3,6 +3,7 @@
             #?(:cljs [com.sagar.casa.ui.footer :refer [Footer]])
             [com.sagar.casa.ui.blog]
             [com.sagar.casa.ui.hello]
+            [com.sagar.casa.ui.not-found]
             #?(:cljs [com.sagar.casa.ui.home])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [com.sagar.casa.ui.router :refer [Router]]

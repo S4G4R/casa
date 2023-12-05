@@ -2,6 +2,7 @@
   (:require #?(:cljs ["react-bootstrap" :refer [Card Col Container ListGroup Row]])
             #?(:cljs ["interweave" :refer [Markup]])
             #?(:clj [com.sagar.casa.api.blog :as api])
+            [com.sagar.casa.ui.not-found :refer [NotFound]]
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
@@ -23,7 +24,9 @@
 
 (e/defn BlogPost [slug]
   (e/client
-   (with-reagent blog-post (e/server (api/blog slug)))))
+   (if-let [blog (e/server (api/blog slug))]
+     (with-reagent blog-post blog)
+     (NotFound.))))
 
 
 (defn blog-entry [{:keys [title description timestamp slug]}]
@@ -46,4 +49,6 @@
 
 (e/defn BlogList []
   (e/client
-   (with-reagent blog-list (e/server (api/blogs)))))
+   (if-let [blogs (e/server (api/blogs))]
+     (with-reagent blog-list blogs)
+     (NotFound.))))
