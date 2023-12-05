@@ -45,7 +45,7 @@
   []
   (->> (str (:storyblok-base-url (config))
             ;; Don't include body of the blog post in the list
-            (str "?excluding_fields=body&token=")
+            (str "?starts_with=blog&excluding_fields=body&token=")
             (:storyblok-token (config)))
        slurp
        cheshire/parse-string
