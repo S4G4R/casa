@@ -11,9 +11,9 @@
      [:> Container {:data-theme :light
                     :class-name "p-5"
                     :style {:text-align :center}}
-      [:> Stack
+      [:> Stack {:class-name "mx-auto p-5 gap-5"}
        [:img {:src image}]
-       [:p text]]]))
+       [:p {:style {:white-space :pre-line}} text]]]))
 
 (e/defn NotFound []
   (e/client
