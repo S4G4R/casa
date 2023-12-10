@@ -15,9 +15,9 @@
      " where I'm working on making processes collaborative."]
     [:p "I use this space to "
      [:a {:href "https://addyosmani.com/blog/write-learn/" :target "_blank"}
-      "write about the interestings things I learn"] ", which may happen"
-     " during my relaxing evening reading sessions, or cold, dark"
-     " and rainy night debugging sessions, and everything in between."]
+      "write about the interestings things I learn"] " during my"
+     " relaxing evening reading sessions, or cold, dark and rainy night"
+     " debugging sessions, and everything in between."]
     [:> Stack {:class-name "p-5" :gap 5}
      [:> Button {:href routes/blog
                  :variant :dark
