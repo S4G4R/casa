@@ -10,16 +10,17 @@
 
 (defn blog-post [{:keys [title html-body description timestamp]}]
   #?(:cljs
-     [:> Container {:fluid true
-                    :data-theme :dark
-                    :class-name "p-5 text-white"}
-      [:> Card {:bg :dark}
-       [:> (.-Header Card)
-        [:> (.-Title Card) [:big title]]
-        [:> (.-Subtitle Card) description]]
-       [:> (.-Body Card) {:style {:--pico-color :white}}
-        [:> Markup {:attributes {:style {:white-space :pre-line}}
-                    :content html-body}]]]]))
+     [:> Container {:data-theme :light
+                    :fluid true}
+      [:div {:class-name "pt-3 mx-auto"}
+       [:> Row
+        [:> Col {:class-name "text-start"}
+         [:big title]]
+        [:> Col {:class-name "text-end d-none d-sm-block"}
+         [:big timestamp]]]
+       [:hr {:style {:border-color :black}}]
+       [:> Markup {:attributes {:style {:white-space :pre-line}}
+                   :content html-body}]]]))
 
 
 (e/defn BlogPost [slug]
@@ -41,8 +42,8 @@
 
 (defn blog-list [blogs]
   #?(:cljs
-     [:> Container {:fluid true :class-name "p-5 overflow-auto"}
-      [:> ListGroup {:class-name "mx-auto"}
+     [:> Container {:fluid true :class-name "overflow-auto"}
+      [:> ListGroup {:class-name "pt-3 mx-auto"}
        (for [{id :id :as entry} blogs]
          [:div {:key id} (blog-entry entry)])]]))
 

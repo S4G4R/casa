@@ -6,9 +6,8 @@
 (defn Home []
   [:> Container {:data-theme :light
                  :fluid true
-                 :class-name "p-5"
                  :style {:text-align :center}}
-   [:div {:class-name "col-xs-12 col-md-6 mx-auto"}
+   [:div {:class-name "pt-3 col-xs-12 col-md-6 mx-auto"}
     [:h1 {:class-name "display-4"} "Hi. I'm Sagar."]
     [:p "I'm currently a backend developer @ "
      [:a {:href "https://unifize.com" :target "_blank"} "Unifize"]
@@ -18,7 +17,7 @@
       "write about the interestings things I learn"] " during my"
      " relaxing evening reading sessions, or cold, dark and rainy night"
      " debugging sessions, and everything in between."]
-    [:> Stack {:class-name "p-5" :gap 5}
+    [:> Stack {:class-name "pt-3" :gap 5}
      [:> Button {:href routes/blog
                  :variant :dark
                  :class-name "contrast mx-auto"}
