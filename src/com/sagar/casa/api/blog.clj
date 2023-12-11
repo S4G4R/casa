@@ -26,9 +26,10 @@
 
 (defn ^:private transform-story
   "Returns the StoryBlok story after applying transformations"
-  [{:keys [first-published-at full-slug]
+  [{:keys [id first-published-at full-slug]
     {:keys [body title description]} :content}]
-  {:timestamp (timestamp->date first-published-at)
+  {:id id
+   :timestamp (timestamp->date first-published-at)
    :slug full-slug
    :html-body (sb/richtext->html body)
    :title title
