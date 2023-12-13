@@ -3,7 +3,7 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.11.60"]
                  [party.donut/system "0.0.215"]
-                 [com.hyperfiddle/electric "v2-alpha-428-g22937f75"]
+                 [com.hyperfiddle/electric "v2-alpha-469-gb6d9865c"]
                  [ring-basic-authentication/ring-basic-authentication "1.1.1"]
                  [info.sunng/ring-jetty9-adapter "0.18.5"]
                  [com.taoensso/timbre "6.1.0"]
