@@ -14,6 +14,6 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy to Fly.io
         run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty) --remote-only
-      - name: Scale RAM to 512MB
-        run: flyctl scale memory 512
+      - name: Scale RAM to 1024MB
+        run: flyctl scale memory 1024
         continue-on-error: true

@@ -42,7 +42,7 @@ flyctl scale memory 512
 flyctl scale count 0 -a casa --yes
 # Resume
 flyctl scale count 1 -a casa --yes
-flyctl scale memory 512
+flyctl scale memory 1024
 ```
 
 ### Delete app
