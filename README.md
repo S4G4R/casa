@@ -11,8 +11,8 @@ lein repl
 OR
 ```bash
 rm -rf resources/public/js \
-&& JVM_OPTS="-DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$(git describe --tags --long --always --dirty)" lein build \
-&& JVM_OPTS="-DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$(git describe --tags --long --always --dirty)" lein run
+&& JVM_OPTS="-DHYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)" lein build \
+&& JVM_OPTS="-DHYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty)" lein run
 ```
 
 ## Build and run Docker Image

@@ -35,26 +35,21 @@
               :app config}})
 
 
-(def VERSION
-  ;; See Dockerfile
-  (not-empty (System/getProperty "HYPERFIDDLE_ELECTRIC_APP_VERSION")))
-
-
 (defn build
   "Build client artifact"
   []
-  (when (str/blank? VERSION)
+  (when (str/blank? server/VERSION)
     (throw
-     (ex-info "HYPERFIDDLE_ELECTRIC_SERVER_VERSION jvm property must be set in prod"
+     (ex-info "HYPERFIDDLE_ELECTRIC_APP_VERSION jvm property must be set in prod"
               {})))
   (shadow-server/start!)
-  (timbre/warn "Building client version" VERSION)
+  (timbre/warn "Building client version" server/VERSION)
   ;; Build release
   (shadow-api/release
    :prod
    {:config-merge
     [{:closure-defines
-      {'hyperfiddle.electric-client/ELECTRIC_USER_VERSION VERSION}}]})
+      {'hyperfiddle.electric-client/ELECTRIC_USER_VERSION server/VERSION}}]})
   (shadow-server/stop!))
 
 

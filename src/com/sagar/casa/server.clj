@@ -17,6 +17,11 @@
             JettyWebSocketServletContainerInitializer$Configurator)))
 
 
+(def VERSION
+  ;; See Dockerfile
+  (not-empty (System/getProperty "HYPERFIDDLE_ELECTRIC_APP_VERSION")))
+
+
 (defn electric-websocket-middleware
   "Open a websocket and boot an Electric server program defined by `entrypoint`.
   Takes:
