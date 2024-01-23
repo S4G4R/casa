@@ -95,7 +95,7 @@
                   (shadow-server/start!)
                   (shadow-api/watch :dev)
                   ;; Build client artifact
-                  (shadow-api/release :dev)
+                  (shadow-api/dev :dev)
                   ;; Start electric compiler and server
                   (timbre/warn (str "Starting server on " host ":" port))
                   (ring/run-jetty (middleware opts entrypoint) opts))
