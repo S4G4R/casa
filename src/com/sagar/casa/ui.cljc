@@ -12,12 +12,15 @@
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 
-(e/defn Root []
-  (e/client
-   (dom/div
-    (dom/props {:style {:padding-top "56px"
-                        :padding-bottom "56px"
-                        :min-height "100vh"}})
-    (with-reagent #?(:cljs Header))
-    (Router.)
-    (with-reagent #?(:cljs Footer)))))
+(e/defn Root [ring-request]
+  (e/server
+   (binding [e/http-request ring-request]
+     (e/client
+      (binding [dom/node js/document.body]
+        (dom/div
+         (dom/props {:style {:padding-top "56px"
+                             :padding-bottom "56px"
+                             :min-height "100vh"}})
+         (with-reagent #?(:cljs Header))
+         (Router.)
+         (with-reagent #?(:cljs Footer))))))))

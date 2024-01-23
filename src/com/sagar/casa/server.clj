@@ -1,144 +1,87 @@
 (ns com.sagar.casa.server
-  (:require [clojure.edn :as edn]
-            [clojure.java.io :as io]
-            [clojure.string :as str]
+  (:require [com.sagar.casa.middleware :as middleware]
+            com.sagar.casa.ui
             [donut.system :as ds]
-            [hyperfiddle.electric-jetty-adapter :as adapter]
-            [ring.adapter.jetty9 :as ring]
-            [ring.middleware.basic-authentication :as auth]
-            [ring.middleware.content-type :refer [wrap-content-type]]
+            [hyperfiddle.electric :as e]
+            [hyperfiddle.electric-ring-adapter :as electric-ring]
+            [ring.adapter.jetty :as ring]
             [ring.middleware.cookies :as cookies]
             [ring.middleware.params :refer [wrap-params]]
-            [ring.middleware.resource :refer [wrap-resource]]
-            [ring.util.response :as res]
             [shadow.cljs.devtools.api :as shadow-api]
             [shadow.cljs.devtools.server :as shadow-server]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre])
+  (:import (org.eclipse.jetty.server.handler.gzip
+            GzipHandler)
+           (org.eclipse.jetty.websocket.server.config
+            JettyWebSocketServletContainerInitializer
+            JettyWebSocketServletContainerInitializer$Configurator)))
 
 
-(defn authenticate [username password] username) ; demo (accept-all) authentication
+(defn electric-websocket-middleware
+  "Open a websocket and boot an Electric server program defined by `entrypoint`.
+  Takes:
+  - a ring handler `next-handler` to call if the request is not a websocket upgrade (e.g. the next middleware in the chain),
+  - a `config` map eventually containing {:hyperfiddle.electric/user-version <version>} to ensure client and server share the same version,
+    - see `hyperfiddle.electric-ring-adapter/wrap-reject-stale-client`
+  - an Electric `entrypoint`: a function (fn [ring-request] (e/boot-server {} my-ns/My-e-defn ring-request))
+  "
+  [next-handler config entrypoint]
+  (-> (electric-ring/wrap-electric-websocket next-handler entrypoint)
+      (cookies/wrap-cookies)
+      (electric-ring/wrap-reject-stale-client config)
+      (wrap-params)))
 
-(defn wrap-demo-authentication "A Basic Auth example. Accepts any username/password and store the username in a cookie."
-  [next-handler]
-  (-> (fn [ring-req]
-        (let [res (next-handler ring-req)]
-          (if-let [username (:basic-authentication ring-req)]
-            (res/set-cookie res "username" username {:http-only true})
-            res)))
-    (cookies/wrap-cookies)
-    (auth/wrap-basic-authentication authenticate)))
+(defn middleware [config entrypoint]
+  (-> (middleware/http-middleware config)  ; 2. serve regular http content
+      (electric-websocket-middleware config entrypoint))) ; 1. intercept electric websocket
 
-(defn wrap-demo-router "A basic path-based routing middleware"
-  [next-handler]
-  (fn [ring-req]
-    (case (:uri ring-req)
-      "/auth" (let [response  ((wrap-demo-authentication next-handler) ring-req)]
-                (if (= 401 (:status response)) ; authenticated?
-                  response                     ; send response to trigger auth prompt
-                  (-> (res/status response 302) ; redirect
-                    (res/header "Location" (get-in ring-req [:headers "referer"]))))) ; redirect to where the auth originated
-      ;; For any other route, delegate to next middleware
-      (next-handler ring-req))))
+(defn- add-gzip-handler!
+  "Makes Jetty server compress responses. Optional but recommended."
+  [server]
+  (.setHandler server
+               (doto (GzipHandler.)
+                 (.setIncludedMimeTypes
+                  (into-array ["text/css"
+                               "text/plain"
+                               "text/javascript"
+                               "application/javascript"
+                               "application/json"
+                               "image/svg+xml"]))
+                 (.setMinGzipSize 1024)
+                 (.setHandler (.getHandler server)))))
 
-(defn template "Takes a `string` and a map of key-values `kvs`. Replace all instances of `$key$` by value in `string`"
-  [string kvs]
-  (reduce-kv (fn [r k v] (str/replace r (str "$" k "$") v)) string kvs))
+(defn- configure-websocket!
+  "Tune Jetty Websocket config for Electric compat."
+  [server]
+  (JettyWebSocketServletContainerInitializer/configure
+   (.getHandler server)
+   (reify JettyWebSocketServletContainerInitializer$Configurator
+     (accept [_this _servletContext wsContainer]
+       (.setIdleTimeout wsContainer (java.time.Duration/ofSeconds 60))
+       ;; 100M - temporary
+       (.setMaxBinaryMessageSize wsContainer (* 100 1024 1024))
+       ;; 100M - temporary
+       (.setMaxTextMessageSize wsContainer (* 100 1024 1024))))))
 
-(defn get-modules [manifest-path]
-  (when-let [manifest (io/resource manifest-path)]
-    (let [manifest-folder
-          (when-let [folder-name (second (rseq (str/split manifest-path #"\/")))]
-            (str "/" folder-name "/"))]
-      (->> (slurp manifest)
-           (edn/read-string)
-           (reduce (fn [r module]
-                     (assoc r
-                            (keyword "hyperfiddle.client.module" (name (:name module)))
-                            (str manifest-folder (:output-name module))))
-                   {})))))
 
-(defn wrap-index-page
-  "Serves the `index.html` file with injected javascript modules from
-  `manifest.edn`. `manifest.edn` is generated by the client build and
-  contains javascript modules information."
-  [next-handler resources-path manifest-path]
-  (fn [ring-req]
-    (if-let [response (res/resource-response (str resources-path "/index.html"))]
-      (if-let [modules (get-modules manifest-path)]
-        ; TODO cache in prod mode
-        (-> (res/response (template (slurp (:body response)) modules))
-            ;; ensure `index.html` is not cached
-            (res/content-type "text/html")
-            (res/header "Cache-Control" "no-store")
-            (res/header "Last-Modified" (get-in response [:headers "Last-Modified"])))
-        ;; No manifest found, can't inject js modules
-        (-> (res/not-found "Missing client program manifest")
-            (res/content-type "text/plain")))
-      ;; index.html file not found on classpath
-      (next-handler ring-req))))
-
-(def VERSION
-  ;; see Dockerfile
-  (not-empty (System/getProperty "HYPERFIDDLE_ELECTRIC_SERVER_VERSION")))
-
-(defn wrap-reject-stale-client
-  "Intercept websocket UPGRADE request and check if client and server
-  versions matches. An electric client is allowed to connect if its
-  version matches the server's version, or if the server doesn't have a
-  version set (dev mode). Otherwise, the client connection is rejected
-  gracefully."
-  [next-handler]
-  (fn [ring-req]
-    (if (ring/ws-upgrade-request? ring-req)
-      (let [client-version (get-in ring-req [:query-params "HYPERFIDDLE_ELECTRIC_CLIENT_VERSION"])]
-        (cond
-          (nil? VERSION)             (next-handler ring-req)
-          (= client-version VERSION) (next-handler ring-req)
-          ;; https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
-          :else (adapter/reject-websocket-handler 1008 "stale client")
-          ))
-      (next-handler ring-req))))
-
-(defn wrap-electric-websocket [next-handler]
-  (fn [ring-request]
-    (if (ring/ws-upgrade-request? ring-request)
-      (let [authenticated-request    (auth/basic-authentication-request ring-request authenticate) ; optional
-            electric-message-handler (partial adapter/electric-ws-message-handler authenticated-request)] ; takes the ring request as first arg - makes it available to electric program
-        (ring/ws-upgrade-response (adapter/electric-ws-adapter electric-message-handler)))
-      (next-handler ring-request))))
-
-(defn electric-websocket-middleware [next-handler]
-  (-> (wrap-electric-websocket next-handler) ; 4. connect electric client
-      (cookies/wrap-cookies) ; 3. makes cookies available to Electric app
-      (wrap-reject-stale-client) ; 2. reject stale electric client
-      (wrap-params) ; 1. parse query params
-      ))
-
-(defn not-found-handler [_ring-request]
-  (-> (res/not-found "Not found")
-      (res/content-type "text/plain")))
-
-(defn http-middleware [resources-path manifest-path]
-  ;; these compose as functions, so are applied bottom up
-  (-> not-found-handler
-    (wrap-index-page resources-path manifest-path) ; 5. otherwise fallback to default page file
-    (wrap-resource resources-path) ; 4. serve static file from classpath
-    (wrap-content-type) ; 3. detect content (e.g. for index.html)
-    (wrap-demo-router) ; 2. route
-    (electric-websocket-middleware) ; 1. intercept electric websocket
-    ))
+(def entrypoint
+  (fn [handler]
+    (e/boot-server {} com.sagar.casa.ui/Root handler)))
 
 
 (def server
   #::ds{:start  (fn [{{:keys [host port] :as opts} ::ds/config}]
                   ;; Start electric compiler and server
                   (timbre/warn (str "Starting server on " host ":" port))
-                  (ring/run-jetty
-                   (http-middleware "public" "public/js/manifest.edn")
-                   opts))
+                  (ring/run-jetty (middleware opts entrypoint) opts))
         :config {:host (ds/ref [:env :http-host])
                  :port (ds/ref [:env :http-port])
-                 :join? false}})
+                 :join? false
+                 :resources-path "public"
+                 :manifest-path "public/js/manifest.edn"
+                 :configurator (fn [server]
+                                 (configure-websocket! server)
+                                 (add-gzip-handler! server))}})
 
 
 (def dev-server
@@ -150,15 +93,18 @@
                   (shadow-api/release :dev)
                   ;; Start electric compiler and server
                   (timbre/warn (str "Starting server on " host ":" port))
-                  (ring/run-jetty
-                   (http-middleware "public" "public/js/manifest.edn")
-                   opts))
+                  (ring/run-jetty (middleware opts entrypoint) opts))
         :stop   (fn [{server ::ds/instance}]
                   (timbre/warn "Stopping HTTP Server...")
-                  (ring/stop-server server)
+                  (.stop server)
                   ;; Stop shadowcljs server
                   (shadow-api/stop-worker :dev)
                   (shadow-server/stop!))
         :config {:host (ds/ref [:env :http-host])
                  :port (ds/ref [:env :http-port])
-                 :join? false}})
+                 :join? false
+                 :resources-path "public"
+                 :manifest-path "public/js/manifest.edn"
+                 :configurator (fn [server]
+                                 (configure-websocket! server)
+                                 (add-gzip-handler! server))}})

@@ -41,9 +41,10 @@
 (e/defn Router []
   (let [{:as match :keys [data query-params path-params]} re-router
         route (some-> data :name)]
-    #?(:cljs (set-page-title! match))
-    (case route
-      :home (with-reagent #?(:cljs Home))
-      :blog (BlogList.)
-      :blog-post (BlogPost. (:slug path-params))
-      (NotFound.))))
+    (e/client
+     #?(:cljs (set-page-title! match))
+     (case route
+       :home (with-reagent #?(:cljs Home))
+       :blog (BlogList.)
+       :blog-post (BlogPost. (:slug path-params))
+       (NotFound.)))))
