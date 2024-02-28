@@ -14,7 +14,7 @@
 
 
 (defn Footer []
-  [:> Navbar {:fixed "bottom" :bg "dark" :variant "dark"}
+  [:> Navbar {:fixed :bottom :bg :dark :variant :dark}
    [:> Stack {:direction "horizontal" :gap 3 :class-name "w-100"}
     [:> Container {:fluid true}
      [:> Row

@@ -12,12 +12,9 @@
   #?(:cljs
      [:> Container {:data-theme :light
                     :fluid true}
-      [:div {:class-name "pt-3 mx-auto"}
-       [:> Row
-        [:> Col {:class-name "text-start"}
-         [:big title]]
-        [:> Col {:class-name "text-end d-none d-sm-block"}
-         [:big timestamp]]]
+      [:div {:class-name "pt-3 col-md-6 mx-auto"}
+       [:div {:class-name "text-center"}
+        [:h1 title]]
        [:hr {:style {:border-color :black}}]
        [:> Markup {:attributes {:style {:white-space :pre-line}}
                    :content html-body}]]]))
