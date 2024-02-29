@@ -7,7 +7,7 @@
   [:> Container {:data-theme :light
                  :fluid true
                  :style {:text-align :center}}
-   [:div {:class-name "pt-3 col-xs-12 col-md-6 mx-auto"}
+   [:div {:class-name "pt-3 col-xs-12 col-md-4 mx-auto"}
     [:h1 {:class-name "display-4"} "Hi. I'm Sagar."]
     [:p "I'm currently a backend developer @ "
      [:a {:href "https://unifize.com" :target "_blank"} "Unifize"]

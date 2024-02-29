@@ -1,7 +1,8 @@
 (ns com.sagar.casa.ui.blog
-  (:require #?(:cljs ["react-bootstrap" :refer [Card Col Container ListGroup Row]])
+  (:require #?(:cljs ["react-bootstrap" :refer [Col Container ListGroup Row Stack]])
             #?(:cljs ["interweave" :refer [Markup]])
             #?(:clj [com.sagar.casa.api.storyblok :as api])
+            #?(:cljs [com.sagar.casa.ui.routes :as routes])
             [com.sagar.casa.ui.not-found :refer [NotFound]]
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e])
@@ -13,8 +14,13 @@
      [:> Container {:data-theme :light
                     :fluid true}
       [:div {:class-name "pt-3 col-md-6 mx-auto"}
-       [:div {:class-name "text-center"}
-        [:h2 title]]
+       [:> Stack {:gap 4}
+        [:a {:style {:text-decoration :none}
+             :href routes/blog}
+         "↰ Back to list"]
+        [:div
+         [:i timestamp]
+         [:h2 title]]]
        [:hr {:style {:border-color :black}}]
        [:> Markup {:attributes {:style {:white-space :pre-line}}
                    :content html-body}]]]))

@@ -1,3 +1,4 @@
 :root {
-    --pico-font-size: 115%;
+    --pico-font-size: 100%;
+    --pico-typography-spacing-vertical: 0.75rem;
 }
