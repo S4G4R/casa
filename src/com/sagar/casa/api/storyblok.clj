@@ -3,9 +3,10 @@
                                             ->snake_case_string]]
             [camel-snake-kebab.extras :refer [transform-keys]]
             [cheshire.core :as cheshire]
-            [ring.util.codec :refer [form-encode]]
+            [clojure.string :as string]
             [donut.system :as ds]
             [java-time.api :as jt]
+            [ring.util.codec :refer [form-encode]]
             [storyblok-clj.core :as sb]
             [taoensso.timbre :as timbre]))
 
@@ -17,12 +18,11 @@
   [timestamp]
   (let [{:keys [year
                 month-of-year
-                day-of-month]} (jt/as-map
-                                (jt/zoned-date-time timestamp))]
+                day-of-month]} (jt/as-map (jt/zoned-date-time timestamp))]
     (str (format "%02d" day-of-month)
-         "/"
-         month-of-year
-         "/"
+         " "
+         (string/capitalize (jt/month month-of-year))
+         ", "
          year)))
 
 
