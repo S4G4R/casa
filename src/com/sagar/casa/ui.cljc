@@ -17,10 +17,8 @@
    (binding [e/http-request ring-request]
      (e/client
       (binding [dom/node js/document.body]
+        (with-reagent #?(:cljs Header))
         (dom/div
-         (dom/props {:style {:padding-top "56px"
-                             :padding-bottom "56px"
-                             :min-height "100vh"}})
-         (with-reagent #?(:cljs Header))
-         (Router.)
-         (with-reagent #?(:cljs Footer))))))))
+         (dom/props {:style {:min-height "90vh"}})
+         (Router.))
+        (with-reagent #?(:cljs Footer)))))))

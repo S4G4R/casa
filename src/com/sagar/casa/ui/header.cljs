@@ -4,9 +4,9 @@
 
 
 (defn Header []
-  [:> Navbar {:fixed :top
+  [:> Navbar {:sticky :top
               :bg :dark
               :variant :dark}
-   [:> (.-Brand Navbar) {:class-name "mx-auto"
+   [:> (.-Brand Navbar) {:class-name "mx-auto display-6"
                          :href routes/home}
-    [:big "Casa"]]])
+    "Casa"]])
