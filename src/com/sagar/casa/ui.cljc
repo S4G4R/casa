@@ -21,4 +21,5 @@
          (dom/props {:style {:min-height "100vh"}})
          (with-reagent #?(:cljs Header))
          (Router.)
-         (with-reagent #?(:cljs Footer))))))))
+         ;;TODO: Fix footer being above content
+         #_(with-reagent #?(:cljs Footer))))))))
