@@ -3,6 +3,9 @@
             #?(:cljs ["interweave" :refer [Markup]])
             #?(:clj [com.sagar.casa.api.storyblok :as api])
             #?(:cljs [com.sagar.casa.ui.routes :as routes])
+            #?(:cljs [re-highlight.core :refer [highlight]])
+            #?(:cljs [reagent.core :refer [as-element]])
+            [clojure.string :as string]
             [com.sagar.casa.ui.not-found :refer [NotFound]]
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e])
@@ -22,7 +25,27 @@
          [:i timestamp]
          [:h2 title]]]
        [:hr {:style {:border-color :black}}]
-       [:> Markup {:attributes {:style {:white-space :pre-line}}
+       [:> Markup {:attributes {:style {:white-space :pre-wrap}}
+                   :transform #(condp = (string/lower-case (.-tagName %1))
+                                 ;; Syntax highlighting for code blocks
+                                 "code"
+                                 (as-element [highlight {:language "clojure"}
+                                              %2])
+                                 "a"
+                                 (as-element [:a {:href (.-href %1)
+                                                  ;; Links should open
+                                                  ;; in a new tab
+                                                  :target "_blank"}
+                                              %2])
+                                 ;; Images need special handling as the
+                                 ;; default cond clause does not copy
+                                 ;; the attrs (Fix?)
+                                 "img"
+                                 (as-element [:img {:src (.-src %1)}])
+                                 ;; Other elements as they are
+                                 (as-element
+                                  [(string/lower-case (.-tagName %1))
+                                   %2]))
                    :content html-body}]]]))
 
 
