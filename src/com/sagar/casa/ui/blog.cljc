@@ -37,11 +37,11 @@
                                                   ;; in a new tab
                                                   :target "_blank"}
                                               %2])
-                                 ;; Images need special handling as the
-                                 ;; default cond clause does not copy
-                                 ;; the attrs (Fix?)
                                  "img"
-                                 (as-element [:img {:src (.-src %1)}])
+                                 (as-element
+                                  ;; Center images
+                                  [:div {:style {:text-align :center}}
+                                   [:img {:src (.-src %1)}]])
                                  ;; Other elements as they are
                                  (as-element
                                   [(string/lower-case (.-tagName %1))
