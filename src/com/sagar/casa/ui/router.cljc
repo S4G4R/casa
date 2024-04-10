@@ -22,7 +22,9 @@
     [routes/blog               {:name :blog
                                 :title "Blog"}]
     [(routes/blogpost ":slug") {:name :blog-post
-                                :title "Blog"}]]))
+                                :title "Blog"}]
+    [routes/not-found          {:name :not-found
+                                :title "Not Found"}]]))
 
 
 #?(:cljs
@@ -47,4 +49,5 @@
        :home (with-reagent #?(:cljs Home))
        :blog (BlogList.)
        :blog-post (BlogPost. (:slug path-params))
+       :not-found (NotFound.)
        (NotFound.)))))

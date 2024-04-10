@@ -2,12 +2,12 @@
   (:require #?(:cljs ["react-bootstrap" :refer [Col Container ListGroup Row Stack]])
             #?(:cljs ["interweave" :refer [Markup]])
             #?(:clj [com.sagar.casa.api.storyblok :as api])
-            #?(:cljs [com.sagar.casa.ui.routes :as routes])
+            [com.sagar.casa.ui.not-found :refer [NotFound]]
             #?(:cljs [re-highlight.core :refer [highlight]])
             #?(:cljs [reagent.core :refer [as-element]])
-            [clojure.string :as string]
-            [com.sagar.casa.ui.not-found :refer [NotFound]]
+            #?(:cljs [clojure.string :as string])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
+            #?(:cljs [com.sagar.casa.ui.routes :as routes])
             [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
@@ -40,6 +40,7 @@
                                  "img"
                                  (as-element
                                   ;; Center images
+                                  ;; TODO: Fix div cannot be inside p
                                   [:div {:style {:text-align :center}}
                                    [:img {:src (.-src %1)}]])
                                  ;; Other elements as they are

@@ -1,6 +1,7 @@
 (ns com.sagar.casa.ui.not-found
   (:require #?(:clj [com.sagar.casa.api.storyblok :as api])
-            #?(:cljs ["react-bootstrap" :refer [Stack Container Button]])
+            #?(:cljs ["react-bootstrap" :refer [Stack Container]])
+            #?(:cljs [reitit.frontend.easy :as rfe])
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
             [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
@@ -19,4 +20,5 @@
 (e/defn NotFound []
   (e/client
    (let [content (e/server (api/get-story :not-found))]
+     (rfe/push-state :not-found)
      (with-reagent not-found content))))
