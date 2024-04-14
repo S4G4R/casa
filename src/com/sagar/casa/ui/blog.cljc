@@ -17,37 +17,37 @@
      [:> Container {:data-theme :light
                     :fluid true}
       [:div {:class-name "pt-3 col-md-6 mx-auto"}
-       [:> Stack {:gap 4}
+       [:> Stack {:gap 1}
         [:a {:style {:text-decoration :none}
              :href routes/blog}
          "↰ Back to list"]
         [:div
          [:i timestamp]
-         [:h2 title]]]
-       [:hr {:style {:border-color :black}}]
-       [:> Markup {:attributes {:style {:white-space :pre-wrap}}
-                   :transform #(condp = (string/lower-case (.-tagName %1))
-                                 ;; Syntax highlighting for code blocks
-                                 "code"
-                                 (as-element [highlight {:language "clojure"}
-                                              %2])
-                                 "a"
-                                 (as-element [:a {:href (.-href %1)
-                                                  ;; Links should open
-                                                  ;; in a new tab
-                                                  :target "_blank"}
-                                              %2])
-                                 "img"
-                                 (as-element
-                                  ;; Center images
-                                  ;; TODO: Fix div cannot be inside p
-                                  [:div {:style {:text-align :center}}
-                                   [:img {:src (.-src %1)}]])
-                                 ;; Other elements as they are
-                                 (as-element
-                                  [(string/lower-case (.-tagName %1))
-                                   %2]))
-                   :content html-body}]]]))
+         [:h2 title]]
+        [:hr {:style {:border-color :black}}]
+        [:> Markup {:attributes {:style {:white-space :pre-wrap}}
+                    :transform #(condp = (string/lower-case (.-tagName %1))
+                                  ;; Syntax highlighting for code blocks
+                                  "code"
+                                  (as-element [highlight {:language "clojure"}
+                                               %2])
+                                  "a"
+                                  (as-element [:a {:href (.-href %1)
+                                                   ;; Links should open
+                                                   ;; in a new tab
+                                                   :target "_blank"}
+                                               %2])
+                                  "img"
+                                  (as-element
+                                   ;; Center images
+                                   ;; TODO: Fix div cannot be inside p
+                                   [:div {:style {:text-align :center}}
+                                    [:img {:src (.-src %1)}]])
+                                  ;; Other elements as they are
+                                  (as-element
+                                   [(string/lower-case (.-tagName %1))
+                                    %2]))
+                    :content html-body}]]]]))
 
 
 (e/defn BlogPost [slug]
