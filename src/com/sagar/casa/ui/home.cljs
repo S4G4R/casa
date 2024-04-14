@@ -9,7 +9,7 @@
                  :style {:text-align :center}}
    [:div {:class-name "pt-3 col-xs-12 col-md-4 mx-auto"}
     [:h1 {:class-name "display-4"} "Hi. I'm Sagar."]
-    [:p "I'm currently a backend developer @ "
+    [:p "I'm a Backend Developer @ "
      [:a {:href "https://unifize.com" :target "_blank"} "Unifize"]
      " where I'm working on making processes collaborative."]
     [:p "I use this space to "

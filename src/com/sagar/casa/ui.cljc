@@ -1,6 +1,5 @@
 (ns com.sagar.casa.ui
   (:require #?(:cljs [com.sagar.casa.ui.header :refer [Header]])
-            #?(:cljs [com.sagar.casa.ui.footer :refer [Footer]])
             [com.sagar.casa.ui.blog]
             [com.sagar.casa.ui.not-found]
             #?(:cljs [com.sagar.casa.ui.home])
@@ -20,6 +19,4 @@
         (dom/div
          (dom/props {:style {:min-height "100vh"}})
          (with-reagent #?(:cljs Header))
-         (Router.)
-         ;;TODO: Fix footer being above content
-         #_(with-reagent #?(:cljs Footer))))))))
+         (Router.)))))))
