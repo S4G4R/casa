@@ -72,7 +72,10 @@
      [:> Container {:data-theme :light
                     :fluid true
                     :class-name "pt-3 col-md-6 overflow-auto mx-auto"}
-      [:> Stack
+      [:> Stack {:gap 2}
+       [:a {:style {:text-decoration :none}
+            :href routes/home}
+        "↰ Home"]
        [:div
         [:h2 "Blog"]
         [:hr {:style {:border-color :black}}]]

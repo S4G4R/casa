@@ -6,17 +6,20 @@
             #?(:cljs [clojure.string :as string])
             [com.sagar.casa.ui.not-found :refer [NotFound]]
             [com.sagar.casa.ui.reagent :refer [with-reagent]]
+            #?(:cljs [com.sagar.casa.ui.routes :as routes])
             [hyperfiddle.electric :as e])
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 
 (defn literature-body [{body :body}]
-  (prn body)
   #?(:cljs
      [:> Container {:data-theme :light
                     :fluid true}
       [:div {:class-name "pt-3 col-md-6 mx-auto"}
-       [:> Stack {:gap 1}
+       [:> Stack {:gap 2}
+        [:a {:style {:text-decoration :none}
+             :href routes/home}
+         "↰ Home"]
         [:div
          [:h2 "Literature"]
          [:hr {:style {:border-color :black}}]]
