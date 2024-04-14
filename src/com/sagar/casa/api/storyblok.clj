@@ -88,6 +88,11 @@
    :image image})
 
 
+(defmethod transform-story :literature
+  [_ {{body :body} :content}]
+  {:body (sb/richtext->html body)})
+
+
 (defmethod transform-story :default
   [_ story]
   story)
@@ -116,6 +121,14 @@
        get-content
        :story
        (transform-story type)))
+
+
+(defmethod get-story :literature
+ [type]
+ (->> (url "/literature")
+      get-content
+      :story
+      (transform-story type)))
 
 
 (comment

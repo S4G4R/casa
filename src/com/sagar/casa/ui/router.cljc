@@ -1,5 +1,6 @@
 (ns com.sagar.casa.ui.router
   (:require [com.sagar.casa.ui.blog :refer [BlogList BlogPost]]
+            [com.sagar.casa.ui.literature :refer [Literature]]
             [com.sagar.casa.ui.not-found :refer [NotFound]]
             #?(:cljs [com.sagar.casa.ui.home :refer [Home]])
             [com.sagar.casa.ui.routes :as routes]
@@ -23,6 +24,8 @@
                                 :title "Blog"}]
     [(routes/blogpost ":slug") {:name :blog-post
                                 :title "Blog"}]
+    [routes/literature         {:name :literature
+                                :title "Literature"}]
     [routes/not-found          {:name :not-found
                                 :title "Not Found"}]]))
 
@@ -50,4 +53,5 @@
        :blog (BlogList.)
        :blog-post (BlogPost. (:slug path-params))
        :not-found (NotFound.)
+       :literature (Literature.)
        (NotFound.)))))

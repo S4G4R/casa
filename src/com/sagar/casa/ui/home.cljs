@@ -21,4 +21,8 @@
      [:> Button {:href routes/blog
                  :variant :dark
                  :class-name "contrast mx-auto"}
-      "Blog"]]]])
+      "Blog"]
+     [:> Button {:href routes/literature
+                 :variant :dark
+                 :class-name "contrast mx-auto"}
+      "Literature"]]]])
