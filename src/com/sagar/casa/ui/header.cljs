@@ -1,5 +1,5 @@
 (ns com.sagar.casa.ui.header
-  (:require ["react-bootstrap" :refer [Container Col Row Navbar Stack]]
+  (:require ["react-bootstrap" :refer [Container Col Row Navbar Stack Nav]]
             [com.sagar.casa.ui.routes :as routes]))
 
 
@@ -19,15 +19,24 @@
               :bg :dark
               :variant :dark}
    [:> Stack {:direction :horizontal :gap 3 :class-name "w-100"}
-    [:> Container {:fluid true}
+    [:> Container {:fluid true :class-name "align-items-center"}
      [:> Row
-      [:> Col
-       [:> (.-Brand Navbar) {:class-name "mx-2 display-6"
+      [:> Col {:class-name "mx-2"}
+       [:> (.-Brand Navbar) {:class-name "display-1"
                              :href routes/home}
-        [:big "Casa 🏠"]]]
+        "Casa 🏠"]
+       [:a {:href routes/blog
+            :style {:text-decoration :none}}
+        "[Blog]"]
+       [:a {:href routes/literature
+            :style {:text-decoration :none}}
+        "[Literature]"]]
       [:> Col {:xs "auto" :class-name "d-none d-sm-block"}
        [:> (.-Text Navbar)
         [:small (str "Made with " \u2665 " using ")]]
        (for [{:keys [index label url]} links]
-         [:a {:href url :target "_blank" :key index}
+         [:a {:href url
+              :target "_blank"
+              :style {:text-decoration :none}
+              :key index}
           [:small "[" label "]"]])]]]]])

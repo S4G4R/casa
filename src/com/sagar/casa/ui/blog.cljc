@@ -39,11 +39,11 @@
                                               %2])
                                  "img"
                                  (as-element
-                                   ;; Center images
-                                   ;; TODO: Fix div cannot be inside p
+                                  ;; Center images
+                                  ;; TODO: Fix div cannot be inside p
                                   [:div {:style {:text-align :center}}
                                    [:img {:src (.-src %1)}]])
-                                  ;; Other elements as they are
+                                 ;; Other elements as they are
                                  (as-element
                                   [(string/lower-case (.-tagName %1))
                                    %2]))
