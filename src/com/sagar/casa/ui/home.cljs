@@ -1,6 +1,5 @@
 (ns com.sagar.casa.ui.home
-  (:require ["react-bootstrap" :refer [Stack Container Button]]
-            [com.sagar.casa.ui.routes :as routes]))
+  (:require ["react-bootstrap" :refer [Container Stack]]))
 
 
 (defn Home []

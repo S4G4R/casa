@@ -1,5 +1,5 @@
 (ns com.sagar.casa.ui.header
-  (:require ["react-bootstrap" :refer [Container Col Row Navbar Stack Nav]]
+  (:require ["react-bootstrap" :refer [Col Container Navbar Row Stack]]
             [com.sagar.casa.ui.routes :as routes]))
 
 
