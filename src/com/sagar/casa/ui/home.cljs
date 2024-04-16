@@ -1,10 +1,9 @@
 (ns com.sagar.casa.ui.home
-  (:require ["react-bootstrap" :refer [Container Stack]]))
+  (:require ["react-bootstrap" :refer [Container Stack Image]]))
 
 
 (defn Home []
   [:> Container {:data-theme :light
-                 :class-name "align-self-center"
                  :fluid true}
    [:div {:class-name "pt-3 col-xs-12 col-md-4 mx-auto"}
     [:h1 {:class-name "display-4"} "Hi. I'm Sagar."]
@@ -18,6 +17,14 @@
      " debugging sessions, and everything in between."]
     [:p "When I'm not writing code, I enjoy going on a walk, doing some"
      " yoga, playing with my dog or swimming."]
+    [:div {:class-name "text-center"}
+     [:> Image
+      {:roundedCircle true
+       :fluid true
+       :alt "Woof!"
+       :width "60%"
+       :height :auto
+       :src "https://a.storyblok.com/f/259055/3072x3024/7939eee9a6/bubble.jpg"}]]
     [:p "You can reach out to me via the below links."
      [:> Stack {:style {:font-size "36px"}
                 :direction :horizontal
