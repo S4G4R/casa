@@ -12,7 +12,13 @@
   #?(:cljs (:require-macros com.sagar.casa.ui.reagent)))
 
 
+#?(:cljs
+   (defn set-page-title! [title]
+     (set! (.-title js/document) title)))
+
+
 (defn blog-post [{:keys [title html-body description timestamp]}]
+  #?(:cljs (set-page-title! title))
   #?(:cljs
      [:> Container {:data-theme :light
                     :fluid true
