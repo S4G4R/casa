@@ -10,7 +10,7 @@ jobs:
     name: Deploy app
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy to Fly.io
         run: flyctl deploy --build-arg HYPERFIDDLE_ELECTRIC_APP_VERSION=$(git describe --tags --long --always --dirty) --remote-only
