@@ -10,6 +10,11 @@
     [:p "I'm a Backend Engineer @ "
      [:a {:href "https://unifize.com" :target "_blank"} "Unifize"]
      " where I'm working on making processes collaborative."]
+    [:p
+     "I was born and raised in " [:b "Lisbon, Portugal "]
+     [:span {:class-name "fi fi-pt"}] " and I'm currently based in"
+     [:br]
+     [:b " Goa, India "] [:span {:class-name "fi fi-in"}] "."]
     [:p "I use this space to "
      [:a {:href "https://addyosmani.com/blog/write-learn/" :target "_blank"}
       "write about the interestings things I learn"] " during my"
@@ -25,7 +30,7 @@
        :width "60%"
        :height :auto
        :src "https://a.storyblok.com/f/259055/3072x3024/7939eee9a6/bubble.jpg"}]]
-    [:p "You can reach out to me via the below links."
+    [:p "Reach out:"
      [:> Stack {:style {:font-size "36px"}
                 :direction :horizontal
                 :gap 2}
