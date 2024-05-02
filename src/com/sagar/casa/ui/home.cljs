@@ -11,10 +11,9 @@
      [:a {:href "https://unifize.com" :target "_blank"} "Unifize"]
      " where I'm working on making processes collaborative."]
     [:p
-     "I was born and raised in " [:b "Lisbon, Portugal "]
+     "I was born and raised in " [:b "Lisbon, PT "]
      [:span {:class-name "fi fi-pt"}] " and I'm currently based in"
-     [:br]
-     [:b " Goa, India "] [:span {:class-name "fi fi-in"}] "."]
+     [:b " Goa, IN "] [:span {:class-name "fi fi-in"}] "."]
     [:p "I use this space to "
      [:a {:href "https://addyosmani.com/blog/write-learn/" :target "_blank"}
       "write about the interestings things I learn"] " during my"
