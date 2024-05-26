@@ -9,4 +9,7 @@
        (map #(select-keys % [:title :slug :description]))
        (map #(assoc % :link (str "https://sagarvrajalal.com/" (:slug %))))
        (map #(dissoc % :slug))
-       (apply rss/channel-xml)))
+       (apply rss/channel-xml
+              {:title "Sagar Vrajalal"
+               :description "Sagar's Blog"
+               :link "https://sagarvrajalal.com/blog"})))
