@@ -79,9 +79,16 @@
                     :fluid true
                     :class-name "pt-3 col-md-6 overflow-auto mx-auto"}
       [:> Stack {:gap 2}
-       [:a {:style {:text-decoration :none}
-            :href routes/home}
-        "↰ Home"]
+
+       [:> Row
+        [:> Col {:class-name "text-start"}
+         [:a {:style {:text-decoration :none}
+              :href routes/home}
+          "↰ Home"]]
+        [:> Col {:class-name "text-end"}
+         [:a {:style {:text-decoration :none}
+              :href routes/rss}
+          "RSS " [:i {:class-name "fa fa-rss"}]]]]
        [:div
         [:h2 "Blog"]
         [:hr {:style {:border-color :black}}]]

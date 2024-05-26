@@ -17,7 +17,8 @@
                  [alekcz/storyblok-clj "1.2.0"]
                  [camel-snake-kebab/camel-snake-kebab "0.4.3"]
                  [clojure.java-time "1.3.0"]
-                 [superstructor/re-highlight "2.0.2"]]
+                 [superstructor/re-highlight "2.0.2"]
+                 [clj-rss "0.4.0"]]
   :plugins [[lein-environ "1.1.0"]]
   :main ^:skip-aot com.sagar.casa
   :target-path "target/%s"

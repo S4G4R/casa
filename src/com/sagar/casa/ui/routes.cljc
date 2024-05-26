@@ -6,3 +6,4 @@
 (def blogpost (partial str blog "/"))
 (def not-found "/not-found")
 (def literature "/literature")
+(def rss "/feed.xml")

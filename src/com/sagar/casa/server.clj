@@ -2,6 +2,7 @@
   (:require [com.sagar.casa.middleware :as middleware]
             com.sagar.casa.ui
             [donut.system :as ds]
+            [com.sagar.casa.rss :as rss]
             [hyperfiddle.electric :as e]
             [hyperfiddle.electric-ring-adapter :as electric-ring]
             [ring.adapter.jetty :as ring]
@@ -9,7 +10,8 @@
             [ring.middleware.params :refer [wrap-params]]
             [shadow.cljs.devtools.api :as shadow-api]
             [shadow.cljs.devtools.server :as shadow-server]
-            [taoensso.timbre :as timbre])
+            [taoensso.timbre :as timbre]
+            [ring.util.response :as res])
   (:import (org.eclipse.jetty.server.handler.gzip
             GzipHandler)
            (org.eclipse.jetty.websocket.server.config
@@ -21,6 +23,18 @@
   ;; See Dockerfile
   (not-empty (System/getProperty "HYPERFIDDLE_ELECTRIC_APP_VERSION")))
 
+(def entrypoint
+  (fn [handler]
+    (e/boot-server {} com.sagar.casa.ui/Root handler)))
+
+
+(defn rss-middleware
+  [handler]
+  (fn [request]
+    (if (= (:uri request) "/feed.xml")
+      (-> (res/response (rss/rss-feed))
+          (res/content-type "application/xml"))
+      (handler request))))
 
 (defn electric-websocket-middleware
   "Open a websocket and boot an Electric server program defined by `entrypoint`.
@@ -30,15 +44,16 @@
     - see `hyperfiddle.electric-ring-adapter/wrap-reject-stale-client`
   - an Electric `entrypoint`: a function (fn [ring-request] (e/boot-server {} my-ns/My-e-defn ring-request))
   "
-  [next-handler config entrypoint]
+  [next-handler config]
   (-> (electric-ring/wrap-electric-websocket next-handler entrypoint)
       (cookies/wrap-cookies)
       (electric-ring/wrap-reject-stale-client config)
       (wrap-params)))
 
-(defn middleware [config entrypoint]
+(defn middleware [config]
   (-> (middleware/http-middleware config)  ; 2. serve regular http content
-      (electric-websocket-middleware config entrypoint))) ; 1. intercept electric websocket
+      (electric-websocket-middleware config) ; 1. intercept electric websocket
+      (rss-middleware)))
 
 (defn- add-gzip-handler!
   "Makes Jetty server compress responses. Optional but recommended."
@@ -69,16 +84,11 @@
        (.setMaxTextMessageSize wsContainer (* 100 1024 1024))))))
 
 
-(def entrypoint
-  (fn [handler]
-    (e/boot-server {} com.sagar.casa.ui/Root handler)))
-
-
 (def server
   #::ds{:start  (fn [{{:keys [host port] :as opts} ::ds/config}]
                   ;; Start electric compiler and server
                   (timbre/warn (str "Starting server on " host ":" port))
-                  (ring/run-jetty (middleware opts entrypoint) opts))
+                  (ring/run-jetty (middleware opts) opts))
         :config {:host (ds/ref [:env :http-host])
                  :port (ds/ref [:env :http-port])
                  :join? false
@@ -98,7 +108,7 @@
                   (shadow-api/dev :dev)
                   ;; Start electric compiler and server
                   (timbre/warn (str "Starting server on " host ":" port))
-                  (ring/run-jetty (middleware opts entrypoint) opts))
+                  (ring/run-jetty (middleware opts) opts))
         :stop   (fn [{server ::ds/instance}]
                   (timbre/warn "Stopping HTTP Server...")
                   (.stop server)
