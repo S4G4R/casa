@@ -17,7 +17,7 @@
      (set! (.-title js/document) title)))
 
 
-(defn blog-post [{:keys [title html-body description timestamp]}]
+(defn blog-post [{:keys [title html-body description date]}]
   #?(:cljs (set-page-title! title))
   #?(:cljs
      [:> Container {:data-theme :light
@@ -28,7 +28,7 @@
             :href routes/blog}
         "↰ Back to list"]
        [:div
-        [:i timestamp]
+        [:i date]
         [:h2 title]
         [:hr {:style {:border-color :black}}]]
        [:> Markup {:attributes {:style {:white-space :pre-wrap}}

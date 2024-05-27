@@ -14,7 +14,7 @@
 (defn timestamp->date
   "Converts an ISO timestamp to a date
 
-  eg. `2023-12-05T15:26:17.541216Z` -> `05/12/2023`"
+  eg. `2023-12-05T15:26:17.541216Z` -> `05 December, 2023`"
   [timestamp]
   (let [{:keys [year
                 month-of-year
@@ -70,7 +70,8 @@
   [_ {:keys [id first-published-at full-slug]
       {:keys [body title description]} :content}]
   {:id id
-   :timestamp (timestamp->date first-published-at)
+   :date (timestamp->date first-published-at)
+   :first-published-at (jt/instant first-published-at)
    :slug full-slug
    :html-body (sb/richtext->html body)
    :title title
