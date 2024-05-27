@@ -63,14 +63,14 @@
      (NotFound.))))
 
 
-(defn blog-entry [{:keys [title description timestamp slug]}]
+(defn blog-entry [{:keys [title description date slug]}]
   #?(:cljs
      [:> (.-Item ListGroup) {:action true
                              :href slug
                              :class-name "mb-3"}
       [:> Row
        [:> Col {:class-name "text-start"} title]
-       [:> Col {:class-name "text-end"} timestamp]]]))
+       [:> Col {:class-name "text-end"} date]]]))
 
 
 (defn blog-list [blogs]
