@@ -12,9 +12,8 @@
                              :html-body :first-published-at]))
        (map #(assoc % :link (str "https://sagarvrajalal.com/" (:slug %))))
        (map #(assoc % :description (str "<![CDATA["
-                                        (slurp (io/resource "rss-header.html"))
+                                        (slurp (io/resource "rss.html"))
                                         (:html-body %)
-                                        (slurp (io/resource "rss-footer.html"))
                                         "]]>")))
        (map #(rename-keys % {:first-published-at :pubDate
                              :id :guid}))
