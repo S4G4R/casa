@@ -2,7 +2,9 @@
                 :http-host "0.0.0.0"
                 :http-port 8080
                 :storyblok-base-url "https://api.storyblok.com/v2/cdn/stories"
-                :storyblok-token "xyz"}}
+                :storyblok-token "xyz"
+                ;; To view drafts, set to "draft" (for dev mode)
+                :storyblok-story-version "published"}}
  :dev [:shared]
  :production [:shared]
  :uberjar [:shared {:aot [#"com.sagar\.+"]}]}
