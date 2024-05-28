@@ -7,7 +7,7 @@
 
 (defn rss-feed
   []
-  (->> (api/get-story :blogs)
+  (->> (api/get-story :blogs {:include-body? true})
        (map #(select-keys % [:id :title :slug :description
                              :html-body :first-published-at]))
        (map #(assoc % :link (str "https://sagarvrajalal.com/" (:slug %))))

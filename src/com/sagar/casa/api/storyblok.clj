@@ -116,9 +116,10 @@
 
 
 (defmethod get-story :blogs
-  [type]
+  [type & [{include-body? :include-body?
+            :or {include-body? false}}]]
   (->> (url nil {:starts-with "blog"
-                 :excluding-fields "body"})
+                 :excluding-fields (if include-body? "" "body")})
        get-content
        :stories
        (transform-story type)))
