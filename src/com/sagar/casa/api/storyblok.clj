@@ -76,8 +76,10 @@
   [_ {:keys [id first-published-at full-slug]
       {:keys [body title description]} :content}]
   {:id id
-   :date (timestamp->date first-published-at)
-   :first-published-at (jt/instant first-published-at)
+   :date (when first-published-at
+           (timestamp->date first-published-at))
+   :first-published-at (when first-published-at
+                         (jt/instant first-published-at))
    :slug full-slug
    :html-body (sb/richtext->html body)
    :title title
