@@ -20,8 +20,6 @@
                              :id :guid}))
        (map #(dissoc % :slug :html-body))
        (apply rss/channel-xml
-              false
               {:title "Sagar Vrajalal"
                :description "Sagar's Blog"
                :link "https://sagarvrajalal.com/blog"})))
-
