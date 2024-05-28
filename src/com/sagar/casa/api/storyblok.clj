@@ -31,16 +31,22 @@
   []
   (-> (ds/system :casa)
       (get-in [::ds/defs :env])
-      (select-keys [:storyblok-token :storyblok-base-url])))
+      (select-keys [:storyblok-token
+                    :storyblok-base-url
+                    :storyblok-story-version])))
 
 
 (defn url
   [& [path opts]]
-  (->> (:storyblok-token (config))
-       (assoc opts :token)
-       (transform-keys ->snake_case_string)
-       form-encode
-       (str (:storyblok-base-url (config)) path "?")))
+  (let [{:keys [storyblok-token
+                storyblok-base-url
+                storyblok-story-version]} (config)]
+    (->> (assoc opts
+                :token storyblok-token
+                :version storyblok-story-version)
+         (transform-keys ->snake_case_string)
+         form-encode
+         (str storyblok-base-url path "?"))))
 
 
 (defn get-content

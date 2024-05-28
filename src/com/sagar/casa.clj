@@ -17,7 +17,8 @@
    :http-host (env :http-host)
    :http-port (read-string (env :http-port))
    :storyblok-base-url (env :storyblok-base-url)
-   :storyblok-token (env :storyblok-token)})
+   :storyblok-token (env :storyblok-token)
+   :storyblok-story-version (env :storyblok-story-version "published")})
 
 
 (def config
