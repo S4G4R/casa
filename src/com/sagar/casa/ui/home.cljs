@@ -7,9 +7,9 @@
                  :fluid true}
    [:div {:class-name "pt-3 col-xs-12 col-md-4 mx-auto"}
     [:h1 {:class-name "display-4"} "Hi. I'm Sagar."]
-    [:p "I'm a Backend Engineer @ "
-     [:a {:href "https://unifize.com" :target "_blank"} "Unifize"]
-     " where I'm working on making processes collaborative."]
+    [:p "I'm a Software Engineer @ "
+     [:a {:href "https://teamohana.com" :target "_blank"} "TeamOhana"]
+     " where I'm making headcount management and planning collaborative."]
     [:p
      "I was born and raised in " [:b "Lisbon, PT "]
      [:span {:class-name "fi fi-pt"}] " and I'm currently based in"
